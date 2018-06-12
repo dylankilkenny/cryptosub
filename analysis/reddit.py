@@ -100,7 +100,7 @@ def SavePosts(subreddit, posts):
         
 def SaveComments(subreddit, comments):
     path = parser.get('LatestFiles', 'path') + 'comments_'+subreddit+'.csv'    
-    comments_file = Path('../data/reddit/latest/comments_'+subreddit+'.csv')
+    comments_file = Path(path)
     file_exists = comments_file.is_file() 
     f = open(path, 'a')
     try:
