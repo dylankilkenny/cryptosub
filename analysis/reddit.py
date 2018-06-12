@@ -50,13 +50,13 @@ def Stream(subs):
                 # Log details
                 Logger(submission.subreddit,submission.created_utc, CommentCounter, PostCounter)
                 # Get postIDs
-                PostIDs = pd.read_csv(parser.get('PostIds', 'path'))
+                PostIDs = pd.read_csv(parser.get('path', 'PostIds'))
                 # Check if already processed
                 if PostIDs['ID'].str.contains(submission.id).any():
                     continue
                 # Add current postID to data frame and save back to csv
                 PostIDs.loc[len(PostIDs)] = submission.id 
-                PostIDs.to_csv(parser.get('PostIds', 'path'), sep=',', index=False)
+                PostIDs.to_csv(parser.get('path', 'PostIds'), sep=',', index=False)
                 # Save post to appropriate csv file
                 SavePosts(str(submission.subreddit), [submission.id, submission.title, submission.created_utc, submission.score, submission.num_comments, submission.author])
                 PostCounter += 1
@@ -86,7 +86,7 @@ def Logger(sub,date,CommentCounter,PostCounter):
     
 
 def SavePosts(subreddit, posts):
-    path = parser.get('LatestFiles', 'path') + '/posts_'+subreddit+'.csv'
+    path = parser.get('path', 'LatestDirectory') + '/posts_'+subreddit+'.csv'
     posts_file = Path(path)
     file_exists = posts_file.is_file()        
     f = open(path, 'a')
@@ -99,7 +99,7 @@ def SavePosts(subreddit, posts):
         f.close()
         
 def SaveComments(subreddit, comments):
-    path = parser.get('LatestFiles', 'path') + 'comments_'+subreddit+'.csv'    
+    path = parser.get('path', 'LatestDirectory') + 'comments_'+subreddit+'.csv'    
     comments_file = Path(path)
     file_exists = comments_file.is_file() 
     f = open(path, 'a')
@@ -113,7 +113,7 @@ def SaveComments(subreddit, comments):
 
 
 if __name__ == '__main__':
-    subreddits = pd.read_csv(parser.get('subs', 'path'))
+    subreddits = pd.read_csv(parser.get('path', 'subs'))
     subs = []
     for i, row in subreddits.iterrows():
         subs.append(row["Subreddit"])
