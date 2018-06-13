@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Analyse reddit posts"""
 
@@ -7,7 +7,7 @@ import re
 from afinn import Afinn
 import numpy as np  
 from nltk.corpus import stopwords
-import nltk
+import nltk 
 from collections import Counter
 import json
 import logging
@@ -15,6 +15,7 @@ import collections
 from nltk.collocations import *
 from pprint import pprint
 import operator
+from datetime import datetime, timedelta
 
 
 class RedditAnalyser(object):
@@ -36,6 +37,50 @@ class RedditAnalyser(object):
         nc = self.number_comments
         np = self.number_posts
         return (nc, np)
+    
+    def NoPostCommentsTotals(self, comment_posts_bd, period):
+        # Create dataframe
+        cpbd_df = pd.DataFrame.from_records(data=comment_posts_bd)
+        cpbd_df['n'] = cpbd_df['n_comment'] + cpbd_df['n_post']
+        # get the last row of dataframe
+        last_row = cpbd_df.tail(1)
+        # get the date in last row 
+        last_row_date = last_row.iloc[0]["Date"] 
+        # to object
+        last_row_date = datetime.strptime(last_row_date,'%Y-%m-%d %H:%M:%S')
+        # take the period (e.g. 1 day) away from the date
+        date_minus_period = last_row_date - timedelta(days=period) 
+
+        # Copy df
+        df_1 = cpbd_df.copy()
+        # Convert date to datetime
+        df_1['Date'] = pd.to_datetime(df_1['Date'])
+        # Find all rows between the 2 dates
+        mask = (df_1['Date'] > date_minus_period) & (df_1['Date'] <= last_row_date)
+        df_1 = df_1.loc[mask]
+        
+
+        # take the period away from date_minus_period
+        previous_period = date_minus_period - timedelta(days=period)
+        # copy df
+        df_2 = cpbd_df.copy()
+        # convert date to datetime
+        df_2['Date'] = pd.to_datetime(df_2['Date'])
+        # find all rows betweent he 2 datetimes
+        mask = (df_2['Date'] > previous_period) & (df_2['Date'] <= date_minus_period)
+        df_2 = df_2.loc[mask]
+        
+        # df_2['dist'] = abs(df_2['n'] - df_2['n'].median())
+        # df_1['dist'] = abs(df_1['n'] - df_1['n'].median())
+        current_period = df_1['n'].sum()
+        previous_period = df_2['n'].sum()
+        
+        if previous_period > 0:
+            pc_change = round(100 * (current_period - previous_period) / previous_period)
+        else:
+            pc_change = "NA"
+        return pc_change, current_period
+
 
     def CommentsPostsByDay(self, oldcpbd):
         cbd = self.comments.copy()
