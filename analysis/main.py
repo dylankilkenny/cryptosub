@@ -49,13 +49,67 @@ def SetNoPostComments(RA, db, subreddit):
                     }
                 }
             )
+
+def SetNoPostCommentsTotals(RA, db, subreddit):
+    # Get number of comments and posts from Reddit Analyser
+    cpbd = QueryCPBD(db, subreddit)
+
+    one_day_change, one_day_total = RA.NoPostCommentsTotals(cpbd, 1)
+    seven_day_change, seven_day_total = RA.NoPostCommentsTotals(cpbd, 7)
+    thirty_day_change, thirty_day_total = RA.NoPostCommentsTotals(cpbd, 30)
+
+    cursor = GetSubredditDocument(db, subreddit)
+    for doc in cursor:
+        if "one_day_total" in doc:
+            # Remove old data
+            db.subreddits.update(
+                {"id": subreddit},
+                { 
+                    "$unset": { 
+                        "one_day_total": "",
+                        "one_day_change": "",
+                        "seven_day_total": "",
+                        "seven_day_change": "",
+                        "thirty_day_total": "",
+                        "thirty_day_change": ""
+                    }
+                }
+            )
+            # Add new data
+            db.subreddits.update_one(
+                {"id": subreddit},
+                {
+                    "$set": {
+                        "one_day_total": one_day_total,
+                        "one_day_change": one_day_change,
+                        "seven_day_total": seven_day_total,
+                        "seven_day_change": seven_day_change,
+                        "thirty_day_total": thirty_day_total, 
+                        "thirty_day_change": thirty_day_change,
+                    }
+                }
+            )
+        else:
+            db.subreddits.update_one(
+                {"id": subreddit},
+                {
+                    "$set": {
+                        "one_day_total": one_day_total,
+                        "one_day_change": one_day_change,
+                        "seven_day_total": seven_day_total,
+                        "seven_day_change": seven_day_change,
+                        "thirty_day_total": thirty_day_total, 
+                        "thirty_day_change": thirty_day_change,
+                    }
+                }
+            )
             
 def SetMostActiveUsers(RA, db, subreddit):
     
     cursor = GetSubredditDocument(db, subreddit)
     for doc in cursor:
         if "most_active_users" in doc:
-            mau = RA.MostActiveUsers(doc["most_active_users"])
+            mau = RA.MostActiveUsers(doc["most_active_users"]) 
             # Remove old data
             db.subreddits.update(
                 {"id": subreddit},
@@ -416,9 +470,7 @@ def SetCurrencyMentionsByDay(RA, db, subreddit):
                 },
                 {
                     "$set": {
-                        "currency_mentions_by_day": arr,
-                        "symbol": symbol,
-                        "currency": currency
+                        "currency_mentions_by_day": arr
                     }, 
                     "$inc": { 
                         "count": len(arr)
@@ -592,52 +644,6 @@ def SetCurrencyByAuthor(RA, db, subreddit, symbol, currency):
         )
 
 
-    # cursor = GetSubredditDocument(db, subreddit)
-    # for doc in cursor:
-    #     if "currency_by_author" in doc:
-    #         _id =  ObjectId(doc["currency_by_author"])
-    #         cba_prev = QueryCBA(db, _id)
-    #         cba = RA.CurrencyByAuthor(cba_prev)
-    #         # Remove old data
-    #         db.currencybyauthor.update(
-    #             {"_id": _id},
-    #             { "$unset": { "currency_by_author": ""} }
-    #         )
-    #         db.currencybyauthor.update_one(
-    #                     {
-    #                         "_id": _id
-    #                     },
-    #                     {
-    #                         "$set": {
-    #                             "currency_by_author": cba
-    #                         }
-    #                     }
-    #                 )
-
-    #     # else create new object
-    #     else:
-    #         cba = RA.CurrencyByAuthor(None)
-    #         if cba == None:
-    #             return
-    #         objectid = ObjectId()
-    #         cbaresult = db.currencybyauthor.insert_one(
-    #                     {      
-    #                         "_id": objectid,
-    #                         "currency_by_author": cba
-    #                     }
-    #                 )
-    #         print(cbaresult)
-    #         db.subreddits.update_one(
-    #                 {
-    #                     "id": subreddit
-    #                 },
-    #                 {
-    #                     "$set": {
-    #                         "currency_by_author": objectid
-    #                     }
-    #                 }
-    #             )
-
 
 def RemoveFiles():
     LATEST_PATH = parser.get('path', 'LatestDirectory')
@@ -664,13 +670,7 @@ if __name__ == '__main__':
         FILES_LENGTH = len(FILES)
         FILE_NAME = "comments_"+SUBREDDIT+".csv"
 
-        if FILE_NAME in FILES:
-            # currency_symbols_path = "{0}data/CurrencySymbols.csv".format(parser.get('path', 'WorkingDirectory'))
-            # currency_symbols = pd.read_csv(currency_symbols_path)
-            # if row["Symbol"] != '0':
-            #     currency = currency_symbols.loc[currency_symbols['Symbol'] == row["Symbol"], 'Currency'].values
-            # else:
-            #     currency = [0]
+        if FILE_NAME in FILES and SUBREDDIT:
             comments_path = "{0}comments_{1}.csv".format(parser.get('path', 'WorkingDirectory'), SUBREDDIT)            
             posts_path = "{0}posts_{1}.csv".format(parser.get('path', 'WorkingDirectory'), SUBREDDIT)
             banned_path = parser.get('path', 'banned_users')
@@ -712,7 +712,7 @@ if __name__ == '__main__':
             log("Instantiating reddit analyser...", newline=True)
             RA = analyser.RedditAnalyser(comments, posts, cryptocurrencies, stopwords, banned_path)
 
-            log("Counting bigrams...")    
+            log("Counting bigrams...")
             SetBigrams(RA, db, SUBREDDIT)
 
             log("bigrams by day...")    
@@ -754,3 +754,6 @@ if __name__ == '__main__':
 
             log("Currency mentions by day...")    
             SetCurrencyMentionsByDay(RA, db, SUBREDDIT)
+
+            log("Comments posts by day totals...")    
+            SetNoPostCommentsTotals(RA, db, SUBREDDIT)
