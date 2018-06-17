@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.2.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "yarn.lock" }}
+      - run: sudo yarn global add greenkeeper-lockfile@1 now
+      - run: yarn
+      - save_cache:
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - ~/.yarn-cache
+      - run: greenkeeper-lockfile-update
+      - run: yarn lint
+      - run: yarn test
+      - run: bash <(curl -s https://codecov.io/bash)
+      - run: greenkeeper-lockfile-upload

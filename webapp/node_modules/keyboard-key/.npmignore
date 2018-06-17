@@ -1,0 +1,6 @@
+*.log*
+.DS_Store
+.idea/
+.yarn-cache/
+coverage/
+node_modules/

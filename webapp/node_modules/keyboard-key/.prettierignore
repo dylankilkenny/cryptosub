@@ -1,0 +1,8 @@
+#
+# Heads up!
+# Keep in sync with .eslintignore
+#
+
+.yarn-cache/**
+coverage/**
+node_modules/**
