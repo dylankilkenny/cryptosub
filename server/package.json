@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon server.js",
+    "test": "mocha --timeout 10000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.1",
+    "mongodb": "^3.0.4",
+    "node-fetch": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2"
+  }
+}
