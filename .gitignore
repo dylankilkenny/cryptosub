@@ -3,7 +3,8 @@
 config.conf
 analysis/latest/*
 analysis/working/*
-api/node_modules
+server/node_modules
+webapp/node_modules
 .vscode/
 
 [Bb]in
