@@ -1,6 +1,9 @@
 # Custom
 .DS_Store
 config.conf
+analysis/latest/*
+analysis/working/*
+api/node_modules
 
 [Bb]in
 [Ii]nclude
@@ -117,3 +120,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
