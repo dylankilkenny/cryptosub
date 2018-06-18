@@ -34,15 +34,36 @@ app.get('/', (req, res) => {
 })
 
 app.get('/Subreddits', (req, res) => {
+    // Get documents from db
     db.collection('subreddits').find().project({
         "one_day_change":1,
         "one_day_total":1,
         "seven_day_change":1,
         "seven_day_total":1,
         "thirty_day_change":1,
-        "thirty_day_total":1
+        "thirty_day_total":1,
+        "currency_mentions":1,
+        "id":1
     }).toArray(function(err, result) {
-        res.send(result)
+        // Remove objects with low amount of data
+        const filtered = result.filter(obj => {
+            if (obj.one_day_change != null && 
+                obj.one_day_total != null &&
+                obj.one_day_change != 'NA' && 
+                obj.one_day_total != 'NA'){
+                return true
+            }
+        })
+        // update array of objects with most popular currency for each sub
+        var updated = filtered.map(function (obj) {
+            const currency_mentions = obj.currency_mentions;
+            const most_popular = _.maxBy(currency_mentions, 'Mentions_Sym');
+            return {
+                most_popular: most_popular.Name,
+                ...obj
+            }
+        })
+        res.send(updated)
     }) 
 })
 
