@@ -77,7 +77,7 @@ class RedditAnalyser(object):
         
         if previous_period > 0:
             pc_change = round(100 * (current_period - previous_period) / previous_period)
-        else:
+        else
             pc_change = "NA"
         return pc_change, current_period
 
@@ -712,3 +712,5 @@ class RedditAnalyser(object):
             users = json.load(jsonFile)
         data = data[~data['Author'].isin(users["users"])]       
         return data
+
+			

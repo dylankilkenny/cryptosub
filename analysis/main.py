@@ -16,7 +16,7 @@ import os, shutil
 from os import listdir
 
 parser = ConfigParser()
-parser.read('../config.conf')
+parser.read('config.conf')
 
 def GetSubredditDocument(db, subreddit):
     cursor = db.subreddits.find(
@@ -58,51 +58,35 @@ def SetNoPostCommentsTotals(RA, db, subreddit):
     seven_day_change, seven_day_total = RA.NoPostCommentsTotals(cpbd, 7)
     thirty_day_change, thirty_day_total = RA.NoPostCommentsTotals(cpbd, 30)
 
-    cursor = GetSubredditDocument(db, subreddit)
-    for doc in cursor:
-        if "one_day_total" in doc:
-            # Remove old data
-            db.subreddits.update(
-                {"id": subreddit},
-                { 
-                    "$unset": { 
-                        "one_day_total": "",
-                        "one_day_change": "",
-                        "seven_day_total": "",
-                        "seven_day_change": "",
-                        "thirty_day_total": "",
-                        "thirty_day_change": ""
-                    }
+    if "one_day_total" in cursor[0]:
+        # Remove old data
+        db.subreddits.update(
+            {"id": subreddit},
+            { 
+                "$unset": { 
+                    "one_day_total": "",
+                    "one_day_change": "",
+                    "seven_day_total": "",
+                    "seven_day_change": "",
+                    "thirty_day_total": "",
+                    "thirty_day_change": ""
                 }
-            )
-            # Add new data
-            db.subreddits.update_one(
-                {"id": subreddit},
-                {
-                    "$set": {
-                        "one_day_total": one_day_total,
-                        "one_day_change": one_day_change,
-                        "seven_day_total": seven_day_total,
-                        "seven_day_change": seven_day_change,
-                        "thirty_day_total": thirty_day_total, 
-                        "thirty_day_change": thirty_day_change,
-                    }
+            }
+        )
+        # Add stats to db
+        db.subreddits.update_one(
+            {"id": subreddit},
+            {
+                "$set": {
+                    "one_day_total": one_day_total,
+                    "one_day_change": one_day_change,
+                    "seven_day_total": seven_day_total,
+                    "seven_day_change": seven_day_change,
+                    "thirty_day_total": thirty_day_total, 
+                    "thirty_day_change": thirty_day_change
                 }
-            )
-        else:
-            db.subreddits.update_one(
-                {"id": subreddit},
-                {
-                    "$set": {
-                        "one_day_total": one_day_total,
-                        "one_day_change": one_day_change,
-                        "seven_day_total": seven_day_total,
-                        "seven_day_change": seven_day_change,
-                        "thirty_day_total": thirty_day_total, 
-                        "thirty_day_change": thirty_day_change,
-                    }
-                }
-            )
+            }
+        )
             
 def SetMostActiveUsers(RA, db, subreddit):
     

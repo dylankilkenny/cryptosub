@@ -15,7 +15,7 @@ import pandas as pd
 from configparser import ConfigParser
 
 parser = ConfigParser()
-parser.read('../config.conf')
+parser.read('config.conf')
 
 
 
