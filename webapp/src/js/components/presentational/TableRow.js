@@ -5,9 +5,12 @@ import { Icon, Grid, Label, Menu, Table, Image } from "semantic-ui-react"
 
 const TableRow = (props) => (
     <Table.Row textAlign='center'>
-        <Table.Cell>{props.rank}</Table.Cell>
-        <Table.Cell>
+        {/* <Table.Cell>{props.rank}</Table.Cell> */}
+        <Table.Cell textAlign='left'>
             <a target="_blank" href={"http://www.reddit.com/r/"+props.subreddit}>/r/{props.subreddit}</a>
+        </Table.Cell>
+        <Table.Cell textAlign='left'>
+            <h5>{props.most_popular}</h5>
         </Table.Cell>
         <Table.Cell>
             <NumberFormat

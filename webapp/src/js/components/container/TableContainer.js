@@ -1,12 +1,15 @@
 import React from 'react';
 import Table from "../presentational/Table";
+import _ from 'lodash';
 
 
 class TableContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            subs: []
+            subs: [],
+            SortedColumn: 'Total (24hr)',
+            SortDirection: 'descending'
         }
         this.storeSubreddits = this.storeSubreddits.bind(this);
     }
@@ -27,14 +30,34 @@ class TableContainer extends React.Component {
         console.log(info)
     }
 
+    handleSort = clickedColumn => () => {
+        console.log(clickedColumn)
+        const { SortedColumn, subs, SortDirection } = this.state
+        if (SortedColumn !== clickedColumn) {
+            const SortedSubs = _.orderBy(subs, [clickedColumn], ['desc'])
+            console.log(SortedSubs)
+            this.setState({
+                SortedColumn: clickedColumn,
+                subs: SortedSubs,
+                SortDirection: 'descending',
+            })
+            return
+        }
+        this.setState({
+            subs: subs.reverse(),
+            SortDirection: SortDirection === 'ascending' ? 'descending' : 'ascending',
+        })
+    }
+
     storeSubreddits = data => {
         var i = 0;
-        const subs = data.map(d => {
+        var subs = data.map(d => {
             i++;
             return {
                 key: i,
                 rank: i,
                 subreddit: d.id,
+                most_popular: d.most_popular,
                 tf_hr_total: d.one_day_total,
                 tf_hr_change: d.one_day_change,
                 seven_day_total: d.seven_day_total,
@@ -43,6 +66,7 @@ class TableContainer extends React.Component {
                 thirty_day_change: d.thirty_day_change,
             }
         })
+        subs = _.orderBy(subs, ['thirty_day_total'], ['desc']);
         this.setState({ subs })
     }
 
@@ -51,6 +75,9 @@ class TableContainer extends React.Component {
             <div>
                 <Table
                     subreddits={this.state.subs}
+                    column={this.state.column}
+                    direction={this.state.direction}
+                    handleSort={this.handleSort}
                     />
             </div>
         )

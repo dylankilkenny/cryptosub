@@ -4,38 +4,61 @@ import { Icon, Label, Popup, Menu, Table } from "semantic-ui-react"
 import TableRow from "./TableRow"
 
 const TableCoin = (props) => (
-  <Table sortable basic color="blue">
+  <Table sortable basic='very' color="blue">
     <Table.Header>
-        <Table.HeaderCell
-          textAlign='center'>
+        {/* <Table.HeaderCell
+          textAlign='center'
+          sorted={props.column === '#' ? props.direction : null}
+          onClick={props.handleSort('rank')}
+          >
           #
-        </Table.HeaderCell>
+        </Table.HeaderCell> */}
         <Table.HeaderCell
-          textAlign='center'>
+          textAlign='center'
+          sorted={props.column === 'Subreddit' ? props.direction : null}
+          onClick={props.handleSort('subreddit')}>
           Subreddit
         </Table.HeaderCell>
         <Table.HeaderCell
-          textAlign='center'>
-          Total (24hr)
+          textAlign='center'
+          sorted={props.column === 'Most Popular Coin' ? props.direction : null}
+          onClick={props.handleSort('most_popular')}>
+          Most Popular Coin
         </Table.HeaderCell>
         <Table.HeaderCell
-          textAlign='center'>
+          textAlign='center'
+          sorted={props.column === 'Total (24hr)' ? props.direction : null}
+          onClick={props.handleSort('tf_hr_total')}>
+          Activity (24hr)
+        </Table.HeaderCell>
+        <Table.HeaderCell
+          textAlign='center'
+          sorted={props.column === 'Change (24hr)' ? props.direction : null}
+          onClick={props.handleSort('tf_hr_change')}>
           Change (24hr)
         </Table.HeaderCell>
         <Table.HeaderCell
-          textAlign='center'>
-          Total (7d)
+          textAlign='center'
+          sorted={props.column === 'Total (7d)' ? props.direction : null}
+          onClick={props.handleSort('seven_day_total')}>
+          Activity (7d)
         </Table.HeaderCell>
         <Table.HeaderCell
-          textAlign='center'>
+          textAlign='center'
+          sorted={props.column === 'Change (7d)' ? props.direction : null}
+          onClick={props.handleSort('seven_day_change')}>
           Change (7d)
         </Table.HeaderCell>
         <Table.HeaderCell
-          textAlign='center'>
-          Total (30d)
+          textAlign='center'
+          sorted={props.column === 'Total (30d)' ? props.direction : null}
+          onClick={props.handleSort('thirty_day_total')}>
+          Activity (30d)
         </Table.HeaderCell>
         <Table.HeaderCell
-          textAlign='center'>
+          textAlign='center'
+          sorted={props.column === 'Change (30d)' ? props.direction : null}
+          onClick={props.handleSort('thirty_day_change')}>
           Change (30d)
         </Table.HeaderCell>
     </Table.Header>
@@ -45,6 +68,7 @@ const TableCoin = (props) => (
           <TableRow
             key={index}
             rank={sub.rank}
+            most_popular={sub.most_popular}
             subreddit={sub.subreddit}
             tf_hr_total={sub.tf_hr_total}
             tf_hr_change={sub.tf_hr_change}
