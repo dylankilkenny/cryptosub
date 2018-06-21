@@ -7,7 +7,7 @@ const TableRow = (props) => (
     <Table.Row textAlign='center'>
         {/* <Table.Cell>{props.rank}</Table.Cell> */}
         <Table.Cell textAlign='left'>
-            <a target="_blank" href={"http://www.reddit.com/r/"+props.subreddit}>/r/{props.subreddit}</a>
+            <h5><a target="_blank" href={"http://www.reddit.com/r/"+props.subreddit}>/r/{props.subreddit}</a></h5>
         </Table.Cell>
         <Table.Cell textAlign='left'>
             <h5>{props.most_popular}</h5>

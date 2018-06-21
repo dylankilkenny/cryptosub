@@ -1,5 +1,14 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const webpack = require('webpack');
+
+const API_URL = {
+  prod: '"http://api.cryptosub.ml/Subreddits"',
+  dev: '"http://localhost:3000/Subreddits"'
+}
+
+const environment = process.env.NODE_ENV === 'prod' ? 'prod' : 'dev';
+
 module.exports = {
   module: {
     rules: [
@@ -50,6 +59,9 @@ module.exports = {
       debug: true,
       template: "./src/index.html",
       filename: "./index.html"
+    }),
+    new webpack.DefinePlugin({
+      API_URL: API_URL[environment]
     })
   ]
 };

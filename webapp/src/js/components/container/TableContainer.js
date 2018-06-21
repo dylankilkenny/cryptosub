@@ -16,6 +16,7 @@ class TableContainer extends React.Component {
 
     componentDidMount() {
         const apiUrl = "http://localhost:3000/Subreddits"
+        console.log(API_URL)
         fetch(apiUrl)
             .then(response => {return response.json()})
             .then(data => {
