@@ -53,7 +53,8 @@ def SetNoPostComments(RA, db, subreddit):
 def SetNoPostCommentsTotals(RA, db, subreddit):
     # Get number of comments and posts from Reddit Analyser
     cpbd = QueryCPBD(db, subreddit)
-
+    cursor = GetSubredditDocument(db, subreddit)
+    
     one_day_change, one_day_total = RA.NoPostCommentsTotals(cpbd, 1)
     seven_day_change, seven_day_total = RA.NoPostCommentsTotals(cpbd, 7)
     thirty_day_change, thirty_day_total = RA.NoPostCommentsTotals(cpbd, 30)
