@@ -14,8 +14,12 @@ from configparser import ConfigParser
 from distutils.dir_util import copy_tree
 import os, shutil
 from os import listdir
+import sys
 
 parser = ConfigParser()
+if len(sys.argv) > 1:
+parser.read(sys.argv[1])
+else:
 parser.read('config.conf')
 
 def GetSubredditDocument(db, subreddit):
