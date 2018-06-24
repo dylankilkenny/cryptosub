@@ -13,11 +13,15 @@ import praw
 import json
 import pandas as pd
 from configparser import ConfigParser
+from pymongo import MongoClient
 
 parser = ConfigParser()
 parser.read('config.conf')
 
 
+# Connect to DB
+client = MongoClient(parser.get('db', 'url'))
+db = client.dev
 
 
 
@@ -50,13 +54,12 @@ def Stream(subs):
                 # Log details
                 Logger(submission.subreddit,submission.created_utc, CommentCounter, PostCounter)
                 # Get postIDs
-                PostIDs = pd.read_csv(parser.get('path', 'PostIds'))
+                PostIDs = getPostIDs()
                 # Check if already processed
-                if PostIDs['ID'].str.contains(submission.id).any():
+                if submission.id in PostIDs:
                     continue
                 # Add current postID to data frame and save back to csv
-                PostIDs.loc[len(PostIDs)] = submission.id 
-                PostIDs.to_csv(parser.get('path', 'PostIds'), sep=',', index=False)
+                updatePostIDs(submission.id)
                 # Save post to appropriate csv file
                 SavePosts(str(submission.subreddit), [submission.id, submission.title, submission.created_utc, submission.score, submission.num_comments, submission.author])
                 PostCounter += 1
@@ -67,19 +70,20 @@ def Stream(subs):
             return False
         except PrawcoreException:
             log(PrawcoreException, newline=True)
-            
-        
-        
-        
-    
 
+def getPostIDs():
+    PostIDs = db.misc.find({},{"PostIDs": 1})
+    return PostIDs[0]["PostIDs"]
 
+def updatePostIDs(PostID):
+    db.misc.update_one({},{'$push': {'PostIDs': PostID}})
 
-    
-        
+def getSubreddits():
+    Subreddits = db.misc.find({},{"subs": 1})
+    return Subreddits[0]["subs"]
+
 #Display mining information to the terminal
 def Logger(sub,date,CommentCounter,PostCounter):
-
     date = datetime.datetime.fromtimestamp(date).strftime('%Y-%m-%d %H:%M:%S')
     log("({0}) Posts:{1} - Comments:{2} - Last:{3}".format(sub,PostCounter,CommentCounter,date), returnline=True)
 
@@ -113,7 +117,8 @@ def SaveComments(subreddit, comments):
 
 
 if __name__ == '__main__':
-    subreddits = pd.read_csv(parser.get('path', 'subs'))
+    # Load subreddit list
+    subreddits = pd.DataFrame.from_records(data=getSubreddits())
     subs = []
     for i, row in subreddits.iterrows():
         subs.append(row["Subreddit"])

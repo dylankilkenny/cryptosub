@@ -640,13 +640,29 @@ def RemoveFiles():
     if not os.path.exists(LATEST_PATH):
         os.makedirs(LATEST_PATH)
 
+def getSubreddits():
+    Subreddits = db.misc.find({},{"subs": 1})
+    return Subreddits[0]["subs"]
+
+def getBannedUsers():
+    banned = db.misc.find({},{"banned_users": 1})
+    return banned[0]["banned_users"]
+
+def getStopwords():
+    stopwords = db.misc.find({},{"stopwords": 1})
+    return stopwords[0]["stopwords"]
+
+def getCryptocurrencies():
+    crypto = db.misc.find({},{"cryptocurrencies": 1})
+    return crypto[0]["cryptocurrencies"]
+
 if __name__ == '__main__':
     # Connect to DB
     client = MongoClient(parser.get('db', 'url'))
     db = client.dev
 
     # Load subreddit list
-    subreddits = pd.read_csv(parser.get('path', 'subs'))
+    subreddits = pd.DataFrame.from_records(data=getSubreddits())
     # Copy files from latest to working directory
     copy_tree(parser.get('path', 'LatestDirectory'), parser.get('path', 'WorkingDirectory'))
     # Remove files from latest directory
@@ -660,11 +676,13 @@ if __name__ == '__main__':
         FILE_NAME = "comments_"+SUBREDDIT+".csv"
 
         if FILE_NAME in FILES and SUBREDDIT:
+            
             comments_path = "{0}comments_{1}.csv".format(parser.get('path', 'WorkingDirectory'), SUBREDDIT)            
             posts_path = "{0}posts_{1}.csv".format(parser.get('path', 'WorkingDirectory'), SUBREDDIT)
-            banned_path = parser.get('path', 'banned_users')
-            stopwords = pd.read_csv(parser.get('path', 'stopwords'))            
-            cryptocurrencies = pd.read_csv(parser.get('path', 'cryptocurrencies'))            
+            
+            stopwords = pd.DataFrame.from_records(data=getStopwords())       
+            cryptocurrencies = pd.DataFrame.from_records(data=getCryptocurrencies())          
+            
             log("Processing: "+ SUBREDDIT +" | Files remaining: " + str(FILES_LENGTH), returnline=True)
 
             # if comments file exists load it
@@ -699,7 +717,7 @@ if __name__ == '__main__':
                 db.subreddits.insert({"id": SUBREDDIT})
 
             log("Instantiating reddit analyser...", newline=True)
-            RA = analyser.RedditAnalyser(comments, posts, cryptocurrencies, stopwords, banned_path)
+            RA = analyser.RedditAnalyser(comments, posts, cryptocurrencies, stopwords, getBannedUsers())
 
             log("Counting bigrams...")
             SetBigrams(RA, db, SUBREDDIT)
