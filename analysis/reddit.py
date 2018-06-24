@@ -78,6 +78,10 @@ def getPostIDs():
 def updatePostIDs(PostID):
     db.misc.update_one({},{'$push': {'PostIDs': PostID}})
 
+def getSubreddits():
+    Subreddits = db.misc.find({},{"subs": 1})
+    return Subreddits[0]["subs"]
+
 #Display mining information to the terminal
 def Logger(sub,date,CommentCounter,PostCounter):
     date = datetime.datetime.fromtimestamp(date).strftime('%Y-%m-%d %H:%M:%S')
@@ -113,7 +117,8 @@ def SaveComments(subreddit, comments):
 
 
 if __name__ == '__main__':
-    subreddits = pd.read_csv(parser.get('path', 'subs'))
+    # Load subreddit list
+    subreddits = pd.DataFrame.from_records(data=getSubreddits())
     subs = []
     for i, row in subreddits.iterrows():
         subs.append(row["Subreddit"])
