@@ -18,9 +18,9 @@ import sys
 
 parser = ConfigParser()
 if len(sys.argv) > 1:
-parser.read(sys.argv[1])
+    parser.read(sys.argv[1])
 else:
-parser.read('config.conf')
+    parser.read('config.conf')
 
 def GetSubredditDocument(db, subreddit):
     cursor = db.subreddits.find(
