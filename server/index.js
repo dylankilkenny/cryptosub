@@ -3,8 +3,8 @@ const app = express()
 const fs = require('fs')
 const cors = require('cors')
 const fetch = require('node-fetch')
-var _ = require('lodash');
-var moment = require('moment');
+const moment = require('moment');
+const _ = require('lodash');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
     res.send("CryptoAnalytics API!")
 })
 
-app.get('/Subreddits', (req, res) => {
+app.get('/AllSubreddits', (req, res) => {
     // Get documents from db
     db.collection('subreddits').find().project({
         "one_day_change":1,
@@ -64,6 +64,65 @@ app.get('/Subreddits', (req, res) => {
             }
         })
         res.send(updated)
+    }) 
+})
+
+app.post('/Subreddit', (req, res) => {
+    const subreddit = req.body.subreddit;
+    db.collection('subreddits').find({"id":req.body.subreddit}).project({
+        "_id":0,
+        "id":0,
+        "overall_user_score_head":0,
+        "overall_user_score_tail":0
+    }).toArray(function(err, result) {
+        res.send(result)
+    }) 
+})
+
+app.post('/CommentsPostsByDay', (req, res) => {
+    const subreddit = req.body.subreddit;
+    db.collection('commentpostbd').find({"id":req.body.subreddit}).project({
+        "comments_posts_by_day":1
+    }).toArray(function(err, result) {
+        var all_days_arr = []
+        // add all objects from all documents into one array
+        for(var doc of result){
+            all_days_arr = all_days_arr.concat(doc.comments_posts_by_day)
+        }
+        var formatted_dates = all_days_arr.map(function (obj) {
+            return {
+                MonthDay: new moment(obj.Date).format('MMM Do'),
+                ...obj
+            }
+        }).sort((a, b) => a.Date - b.Date);
+        res.send(formatted_dates)
+    }) 
+})
+
+app.post('/CurrencyMentionsByDay', (req, res) => {
+    const subreddit = req.body.subreddit;
+    db.collection('currencymentionsbd').find({"id":subreddit}).project({
+        "currency_mentions_by_day":1
+    }).toArray(function(err, result) {
+        res.send(result)
+    }) 
+})
+
+app.post('/WordCountByDay', (req, res) => {
+    const subreddit = req.body.subreddit;
+    db.collection('wordcountbd').find({"id":subreddit}).project({
+        "wordcount_by_day":1
+    }).toArray(function(err, result) {
+        res.send(result)
+    }) 
+})
+
+app.post('/BigramByDay', (req, res) => {
+    const subreddit = req.body.subreddit;
+    db.collection('bigramsbd').find({"id":subreddit}).project({
+        "bigram_by_day":1
+    }).toArray(function(err, result) {
+        res.send(result)
     }) 
 })
 
