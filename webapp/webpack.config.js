@@ -3,13 +3,17 @@ const path = require("path");
 const webpack = require('webpack');
 
 const API_URL = {
-  prod: '"http://api.cryptosub.ml/Subreddits"',
-  dev: '"http://localhost:3000/Subreddits"'
+  prod: '"http://api.cryptosub.ml/"',
+  dev: '"http://localhost:3000/"'
 }
 
 const environment = process.env.NODE_ENV === 'prod' ? 'prod' : 'dev';
 
 module.exports = {
+  devServer: {
+    contentBase: "./dist",
+    historyApiFallback: true
+  },
   module: {
     rules: [
       {
