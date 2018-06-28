@@ -15,8 +15,8 @@ class TableContainer extends React.Component {
     }
 
     componentDidMount() {
-
-        fetch(API_URL)
+        const endpoint = "AllSubreddits"
+        fetch(API_URL + endpoint)
             .then(response => {return response.json()})
             .then(data => {
                 console.log(data)
