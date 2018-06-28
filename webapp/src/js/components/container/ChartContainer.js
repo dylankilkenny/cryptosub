@@ -63,7 +63,7 @@ class ChartContainer extends React.Component {
                 />
                 <ResponsiveContainer width="99%" height={300}>
                     <LineChart data={this.state.filteredCommPosts}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                        margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis minTickGap={15} dataKey="MonthDay" />
                         <YAxis yAxisId="left" />
