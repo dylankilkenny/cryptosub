@@ -92,9 +92,12 @@ app.post('/CommentsPostsByDay', (req, res) => {
         var formatted_dates = all_days_arr.map(function (obj) {
             return {
                 MonthDay: new moment(obj.Date).format('MMM Do'),
+                Moment: new moment(obj.Date),
                 ...obj
             }
-        }).sort((a, b) => a.Date - b.Date);
+        })
+        // order by date in asc
+        const ordered = _.orderBy(all_days_arr, ['Date'],['asc'])
         res.send(formatted_dates)
     }) 
 })
@@ -104,7 +107,13 @@ app.post('/CurrencyMentionsByDay', (req, res) => {
     db.collection('currencymentionsbd').find({"id":subreddit}).project({
         "currency_mentions_by_day":1
     }).toArray(function(err, result) {
-        res.send(result)
+        var all_days_arr = []
+        // add all objects from all documents into one array
+        for(var doc of result){
+            all_days_arr = all_days_arr.concat(doc.currency_mentions_by_day)
+        }
+        const ordered = _.orderBy(all_days_arr, ['Date'],['asc'])        
+        res.send(ordered)
     }) 
 })
 
@@ -125,6 +134,7 @@ app.post('/BigramByDay', (req, res) => {
         res.send(result)
     }) 
 })
+
 
 //Use this cors config for production, allowing authorized origins to connect
 // app.use(function (req, res, next) {
