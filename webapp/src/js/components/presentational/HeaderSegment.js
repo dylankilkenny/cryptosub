@@ -26,7 +26,7 @@ const HeaderSegment = (props) => (
                 </Grid.Column>
                 <Grid.Column width={6}>
                     <Header as='h2' textAlign='center'>
-                        CryptoCurrency Subreddit Tracker
+                        Crypto Subreddit Tracker
                                             </Header>
                 </Grid.Column>
                 <Grid.Column>
