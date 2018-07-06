@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from "prop-types";
+
 import { Card, Icon, List, Label, Statistic, Grid, Segment, Header } from 'semantic-ui-react'
 import NumberFormat from 'react-number-format';
 
@@ -99,6 +101,12 @@ const SubInfoCard = (props) => (
         </Grid.Row>
         </Grid>
 )
+
+SubInfoCard.propTypes = {
+    SubName: PropTypes.string.isRequired,
+    payload: PropTypes.string.isRequired,
+    Subreddit: PropTypes.object.isRequired
+};
 
 export default SubInfoCard
 

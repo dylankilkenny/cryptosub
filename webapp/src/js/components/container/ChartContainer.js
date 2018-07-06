@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+
 import moment from 'moment';
 import _ from "lodash";
+import { Segment, Grid, Header } from 'semantic-ui-react'
+
 import ChartHeader from "../presentational/ChartHeader";
 import Chart from "../presentational/Chart";
-import { Segment, Grid, Header } from 'semantic-ui-react'
 
 
 class ChartContainer extends React.Component {
@@ -76,5 +79,10 @@ class ChartContainer extends React.Component {
         )
     }
 }
+
+ChartContainer.propTypes = {
+    CommentsPostsByDay: PropTypes.array.isRequired,
+    payload: PropTypes.string.isRequired
+};
 
 export default ChartContainer

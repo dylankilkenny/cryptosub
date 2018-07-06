@@ -83,4 +83,11 @@ const TableCoin = (props) => (
   </Table>
 );
 
+TableCoin.propTypes = {
+  subreddits: PropTypes.array.isRequired,
+  column: PropTypes.string.isRequired,
+  direction: PropTypes.string.isRequired,
+  handleSort: PropTypes.func.isRequired
+};
+
 export default TableCoin

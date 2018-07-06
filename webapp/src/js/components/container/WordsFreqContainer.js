@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import _ from "lodash";
 import { ResponsiveContainer, BarChart, Legend, XAxis, YAxis, CartesianGrid, Tooltip, Bar } from 'recharts';
 import { Segment, Header, Grid, Button } from 'semantic-ui-react'
@@ -166,5 +168,10 @@ class WordsFreqContainer extends React.Component {
         )
     }
 }
+
+WordsFreqContainer.propTypes = {
+    WordCount: PropTypes.array.isRequired,
+    payload: PropTypes.string.isRequired
+};
 
 export default WordsFreqContainer

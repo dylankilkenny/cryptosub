@@ -64,4 +64,16 @@ const TableRow = (props) => (
     </Table.Row>
 )
 
+TableRow.propTypes = {
+    key: PropTypes.number.isRequired,
+    most_popular: PropTypes.string.isRequired,
+    subreddit: PropTypes.string.isRequired,
+    tf_hr_total: PropTypes.number.isRequired,
+    tf_hr_change: PropTypes.number.isRequired,
+    seven_day_total: PropTypes.number.isRequired,
+    seven_day_change: PropTypes.number.isRequired,
+    thirty_day_total: PropTypes.number.isRequired,
+    thirty_day_change: PropTypes.number.isRequired,
+};
+
 export default TableRow

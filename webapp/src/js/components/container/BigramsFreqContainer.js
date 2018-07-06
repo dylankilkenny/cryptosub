@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import _ from "lodash";
 import { ResponsiveContainer, BarChart, Legend, XAxis, YAxis, CartesianGrid, Tooltip, Bar } from 'recharts';
 import { Segment, Header, Grid, Button } from 'semantic-ui-react'
@@ -165,5 +167,10 @@ class BigramsFreqContainer extends React.Component {
         )
     }
 }
+
+BigramsFreqContainer.propTypes = {
+    BigramCount: PropTypes.array.isRequired,
+    payload: PropTypes.string.isRequired
+};
 
 export default BigramsFreqContainer

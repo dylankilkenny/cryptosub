@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from "prop-types";
+
 import { 
     Segment, 
     ResponsiveContainer, 
@@ -43,4 +45,9 @@ const VolumeChart = ({ filteredCommPosts }) => (
         </LineChart>
     </ResponsiveContainer>
 )
+
+VolumeChart.propTypes = {
+    filteredCommPosts: PropTypes.array.isRequired
+};
+
 export default VolumeChart
