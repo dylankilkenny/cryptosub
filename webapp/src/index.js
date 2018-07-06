@@ -13,27 +13,10 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <div>
-                    <Grid columns='equal'>
-                        <Grid.Row>
-                            <Grid.Column textAlign='center' >
-                                <HeaderSegment />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
-                            </Grid.Column>
-                            <Grid.Column width={12}>
-                                <Switch>
-                                    <Route exact path='/' component={TableContainer} />
-                                    <Route path='/:subreddit' component={SubredditContainer} />
-                                </Switch>
-                            </Grid.Column>
-                            <Grid.Column>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </div>
+                <Switch>
+                    <Route exact path='/' component={TableContainer} />
+                    <Route path='/:subreddit' component={SubredditContainer} />
+                </Switch>
             </Router>
         );
     }
