@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from "../presentational/Table";
+import MainContentGrid from "../presentational/MainContentGrid";
 import _ from 'lodash';
+import { Grid, Segment, Icon, Button } from 'semantic-ui-react'
 
 
 class TableContainer extends React.Component {
@@ -17,7 +19,7 @@ class TableContainer extends React.Component {
     componentDidMount() {
         const endpoint = "AllSubreddits"
         fetch(API_URL + endpoint)
-            .then(response => {return response.json()})
+            .then(response => { return response.json() })
             .then(data => {
                 console.log(data)
                 this.storeSubreddits(data)
@@ -73,12 +75,15 @@ class TableContainer extends React.Component {
     render() {
         return (
             <div>
-                <Table
-                    subreddits={this.state.subs}
-                    column={this.state.column}
-                    direction={this.state.direction}
-                    handleSort={this.handleSort}
+                <MainContentGrid
+                    width={12}>
+                    <Table
+                        subreddits={this.state.subs}
+                        column={this.state.column}
+                        direction={this.state.direction}
+                        handleSort={this.handleSort}
                     />
+                </MainContentGrid>
             </div>
         )
     }
