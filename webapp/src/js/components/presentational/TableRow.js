@@ -2,12 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import NumberFormat from 'react-number-format';
 import { Icon, Grid, Label, Menu, Table, Image } from "semantic-ui-react"
+import { Link } from 'react-router-dom'
 
 const TableRow = (props) => (
     <Table.Row textAlign='center'>
         {/* <Table.Cell>{props.rank}</Table.Cell> */}
         <Table.Cell textAlign='left'>
-            <h5><a target="_blank" href={"http://www.reddit.com/r/"+props.subreddit}>/r/{props.subreddit}</a></h5>
+            <Link to={`/${props.subreddit}`}>
+                r/{props.subreddit}
+            </Link>
         </Table.Cell>
         <Table.Cell textAlign='left'>
             <h5>{props.most_popular}</h5>
@@ -60,5 +63,17 @@ const TableRow = (props) => (
         </Table.Cell>
     </Table.Row>
 )
+
+TableRow.propTypes = {
+    key: PropTypes.number.isRequired,
+    most_popular: PropTypes.string.isRequired,
+    subreddit: PropTypes.string.isRequired,
+    tf_hr_total: PropTypes.number.isRequired,
+    tf_hr_change: PropTypes.number.isRequired,
+    seven_day_total: PropTypes.number.isRequired,
+    seven_day_change: PropTypes.number.isRequired,
+    thirty_day_total: PropTypes.number.isRequired,
+    thirty_day_change: PropTypes.number.isRequired,
+};
 
 export default TableRow
