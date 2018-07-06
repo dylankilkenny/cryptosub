@@ -79,8 +79,8 @@ class TableContainer extends React.Component {
                     width={12}>
                     <Table
                         subreddits={this.state.subs}
-                        column={this.state.column}
-                        direction={this.state.direction}
+                        column={this.state.SortedColumn}
+                        direction={this.state.SortDirection}
                         handleSort={this.handleSort}
                     />
                 </MainContentGrid>

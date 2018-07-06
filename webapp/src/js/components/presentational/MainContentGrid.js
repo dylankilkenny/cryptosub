@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from "prop-types";
+
 import HeaderSegment from "./HeaderSegment";
 import { Button, Header, Icon, Modal, List, Grid, Card } from 'semantic-ui-react'
 
@@ -21,5 +23,11 @@ const MainContentGrid = ({children, width}) => (
         </Grid.Row>
     </Grid>
 )
+
+MainContentGrid.propTypes = {
+    width: PropTypes.number.isRequired,
+    children: PropTypes.element.isRequired
+};
+
 
 export default MainContentGrid

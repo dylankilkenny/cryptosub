@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import _ from "lodash";
+import moment from 'moment';
+import { SingleDatePicker } from 'react-dates';
 import { ResponsiveContainer, BarChart, Legend, XAxis, YAxis, CartesianGrid, Tooltip, Bar } from 'recharts';
 import { Segment, Header, Grid, Button } from 'semantic-ui-react'
-import { SingleDatePicker } from 'react-dates';
-import moment from 'moment';
 
-class ChartContainer extends React.Component {
+class PopularCoinsContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -163,4 +165,9 @@ class ChartContainer extends React.Component {
     }
 }
 
-export default ChartContainer
+PopularCoinsContainer.propTypes = {
+    CommentsPostsByDay: PropTypes.array.isRequired,
+    payload: PropTypes.string.isRequired
+};
+
+export default PopularCoinsContainer
