@@ -19,7 +19,7 @@ class CommentsPosts(object):
         self.number_posts = len(self.posts)
         self.comments_posts_by_day = None
     
-    def GetNumCommentsPosts(self):
+    def getNumCommentsPosts(self):
         return self.number_comments, self.number_posts
     
     def CommentsPostsActivity(self, period):
@@ -68,7 +68,7 @@ class CommentsPosts(object):
 
         return pc_change, current_period
     
-    def CommentsPostsByDay(self, oldcpbd = None):
+    def getCommentsPostsByDay(self, oldcpbd = None):
         """
         Calculates the number of comments and posts occuring on a subreddit
         each day. The grouping is done on the Date column, which is accurate 
