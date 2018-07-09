@@ -446,8 +446,8 @@ class RedditAnalyser(object):
         comments["Date"] = pd.to_datetime(comments['Date'], errors='coerce')
         posts["Date"] = pd.to_datetime(posts['Date'], errors='coerce')
         # Convert back to string date without hours
-        comments["Date"] = comments["Date"].dt.strftime('%Y-%m-%d %H:00:00')
-        posts["Date"] = posts["Date"].dt.strftime('%Y-%m-%d %H:00:00')
+        comments["Date"] = comments["Date"].dt.strftime('%Y-%m-%d')
+        posts["Date"] = posts["Date"].dt.strftime('%Y-%m-%d')
         merged = pd.concat([posts,comments])   
         # Group by date
         merged = merged.groupby('Date')
