@@ -2,7 +2,8 @@ test:
   image: python:3.6
   script:
   - apt-get update -q -y
-  - cd analysis
   - pip3 install -r requirements.txt
+  - cd analysis
   - python3 setup.py
+  - cd test
   - pytest
