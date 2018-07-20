@@ -6,7 +6,7 @@ parser = ConfigParser()
 parser.read('config.conf')
 
 # Connect to DB
-client = MongoClient(parser.get('db', 'url'))
+client = MongoClient("mongodb://localhost:27017/")
 db = client.dev
 
 # Open setup file
