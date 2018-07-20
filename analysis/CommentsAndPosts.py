@@ -66,7 +66,7 @@ class CommentsPosts(object):
         else:
             pc_change = 0
 
-        return pc_change, current_period
+        return pc_change, int(current_period)
     
     def getCommentsPostsByDay(self, oldcpbd = None):
         """
