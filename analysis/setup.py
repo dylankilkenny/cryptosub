@@ -2,6 +2,9 @@ from pymongo import MongoClient
 from configparser import ConfigParser
 import json
 import os
+import nltk
+
+nltk.download('punkt')
 
 parser = ConfigParser()
 parser.read('config.conf')
