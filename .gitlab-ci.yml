@@ -1,5 +1,6 @@
 test:
-  services: mongodb:latest
+  services: 
+  - mongodb:latest
   image: python:3.6
   script:
   - apt-get update -q -y
