@@ -5,10 +5,22 @@ from MongoDB import MongoDB as db
 import pandas as pd
 from Cleanse import Cleanse
 from mockdf import MockDF
+import os
+
+from configparser import ConfigParser
+parser = ConfigParser()
+parser.read('../config.conf')
+
+# Connect to DB
+if os.environ['ENV'] == "test":
+    url = "mongodb://mongo/"
+else:
+    url = parser.get('db', 'url')
+db = db(url)
 
 mock = MockDF()
 dataframe = mock.getDataframe()
-db = db("mongodb://localhost:27017/")
+
 bannedusers = db.getBannedUsers()
 stopwords = pd.DataFrame.from_records(data=db.getStopwords())
 clean = Cleanse(dataframe, dataframe, stopwords, bannedusers)
