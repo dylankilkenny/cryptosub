@@ -1,12 +1,18 @@
 from pymongo import MongoClient
 from configparser import ConfigParser
 import json
+import os
 
 parser = ConfigParser()
 parser.read('config.conf')
 
 # Connect to DB
-client = MongoClient("mongodb://localhost:27017/")
+if os.environ['ENV'] == "test":
+    url = "mongo"
+else:
+    url = parser.get('db', 'url')
+    
+client = MongoClient(url)
 db = client.dev
 
 # Open setup file
