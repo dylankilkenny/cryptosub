@@ -97,7 +97,7 @@ def SavePosts(subreddit, posts):
     try:
         writer = csv.writer(f)        
         if file_exists is False:
-            writer.writerow(["ID", "Title", "Date", "Score", "No. Comments", "Author"])
+            writer.writerow(["ID", "Text", "Date", "Score", "No. Comments", "Author"])
         writer.writerow(posts)
     finally:
         f.close()
@@ -110,7 +110,7 @@ def SaveComments(subreddit, comments):
     try:
         writer = csv.writer(f)
         if file_exists is False:
-            writer.writerow(["ID", "PostID", "Body", "Date", "Score", "Author"])
+            writer.writerow(["ID", "PostID", "Text", "Date", "Score", "Author"])
         writer.writerow(comments)
     finally:
         f.close()
