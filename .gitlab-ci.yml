@@ -2,6 +2,8 @@ test:
   services: 
   - mongo
   image: python:3.6
+  variables:
+    ENV: 'test'
   script:
   - apt-get update -q -y
   - pip3 install -r requirements.txt

@@ -8,7 +8,7 @@ parser.read('config.conf')
 
 # Connect to DB
 if os.environ['ENV'] == "test":
-    url = "mongo"
+    url = "mongodb://mongo/"
 else:
     url = parser.get('db', 'url')
     
