@@ -3,6 +3,7 @@ import json
 from collections import Counter
 
 
+
 class WordFreq(object):
     """
     Calculates the frequency a word occurs within a given subreddit. 
@@ -29,9 +30,9 @@ class WordFreq(object):
         post_df = pd.DataFrame(posts_count, columns=['word', 'n_post'])
         word_freq_df = pd.merge(com_df, post_df, on='word', how='outer')
         word_freq_df.fillna(0, inplace=True) # Remove NA
+
         # create n column with total count from post and comments
         word_freq_df['n'] = word_freq_df['n_comment'] + word_freq_df['n_post'] 
-
         self.word_count = word_freq_df
         # limit to 500 words
         word_freq_df = word_freq_df.sort_values('n', ascending=False).head(500)
@@ -40,7 +41,7 @@ class WordFreq(object):
         # the updated counts
         if old_word_freq != None:
             old_word_freq = pd.DataFrame.from_records(data=old_word_freq)
-            oldnew_merged = pd.concat([word_freq_df,old_word_freq])
+            oldnew_merged = pd.concat([word_freq_df,old_word_freq], sort=True)
             # Updated counts
             word_freq_df = oldnew_merged.groupby('word').sum().reset_index()
 
@@ -60,7 +61,7 @@ class WordFreq(object):
         comments_copy["Date"] = comments_copy["Date"].dt.strftime('%Y-%m-%d')
         posts_copy["Date"] = posts_copy["Date"].dt.strftime('%Y-%m-%d')
         # Merge both datasets
-        merged = pd.concat([comments_copy,posts_copy])
+        merged = pd.concat([comments_copy,posts_copy], sort=True)
         # Group by date
         merged = merged.groupby('Date')
 
@@ -83,7 +84,7 @@ class WordFreq(object):
 
         if oldwordcount != None:
             oldwordcount = pd.DataFrame.from_records(data=oldwordcount)
-            oldnew_merged = pd.concat([wcbd,oldwordcount])
+            oldnew_merged = pd.concat([wcbd,oldwordcount], sort=True)
 
             flattened = []
             # loop through dataframe, grouped by date, creating 
@@ -106,6 +107,8 @@ class WordFreq(object):
                 n = list(group["n"])
                 group_arr = []
                 for i in range(len(n)-1):
+                    if i > 25: 
+                        break
                     group_arr.append({
                         "word":word[i],
                         "n":n[i]
