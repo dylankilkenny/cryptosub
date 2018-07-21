@@ -2,9 +2,9 @@ import sys
 from configparser import ConfigParser
 from os import listdir
 
-from MongoDB import MongoDB as db
+from db import MongoDB as db
 from logger import log
-from AnalysisManager import AnalysisManager
+from analysismanager import AnalysisManager
 
 if __name__ == "__main__":
     
@@ -25,9 +25,12 @@ if __name__ == "__main__":
         all_datasets = listdir(am._working_dir)
         dataset_names = ["comments_{}.csv".format(subreddit), "posts_{}.csv".format(subreddit)]
         if any(dataset in all_datasets for dataset in dataset_names):
-            loaded = am.loadDatasets(subreddit)
+            log("Processing: "+ subreddit +" | Files remaining: " + str(len(all_datasets)))
+            loaded = am.load_datasets(subreddit)
             if loaded:
-                log("Processing: "+ subreddit +" | Files remaining: " + str(len(all_datasets)), returnline=True)
-                am.cleanseDatasets()
-                am.CommentsAndPosts()
-                am.WordFreq()
+                am.cleanse_datasets()
+                am.comments_and_posts()
+                am.wordfreq()
+                am.bigramfreq()
+                am.currency_mentions()
+                log("*"*30)
