@@ -17,9 +17,9 @@ class BigramFreq(object):
 
         self.comments = comments
         self.posts = posts
-        self.bigram = None
+        self.bigram_freq_df = None
     
-    def getBigramFreq(self, old_bigrams):
+    def get_bigram_freq(self, old_bigrams):
         """
         Creating a list of bigram frequencies from the gathered 
         reddit comments and posts
@@ -49,7 +49,7 @@ class BigramFreq(object):
         bigram['n'] = bigram['n_comment'] + bigram['n_post']
         bigram["bigram"] = bigram["bigram"].apply(lambda x: ' '.join(x))
 
-        self.bigram = bigram
+        self.bigram_freq_df = bigram
         # sort and limit to 500 bigrams
         bigram = bigram.sort_values('n', ascending=False).head(500)
         # If old bigram count in database, merge new with old and return 
@@ -64,7 +64,7 @@ class BigramFreq(object):
         return json.loads(bigram)
     
 
-    def getBigramFreqByDay(self, oldbigrams):
+    def get_bigram_freq_by_day(self, oldbigrams):
         # copy dataframes
         comments = self.comments.copy()
         posts = self.posts.copy()

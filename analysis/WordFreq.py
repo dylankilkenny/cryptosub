@@ -17,9 +17,9 @@ class WordFreq(object):
         # pd.options.mode.chained_assignment = None
         self.comments = comments
         self.posts = posts
-        self.word_freq = None
+        self.word_freq_df = None
     
-    def getWordFreq(self, old_word_freq):
+    def get_word_freq(self, old_word_freq):
         # Copy of dataframes
         comments_copy = self.comments.copy()
         posts_copy = self.posts.copy()
@@ -33,7 +33,7 @@ class WordFreq(object):
 
         # create n column with total count from post and comments
         word_freq_df['n'] = word_freq_df['n_comment'] + word_freq_df['n_post'] 
-        self.word_count = word_freq_df
+        self.word_freq_df = word_freq_df
         # limit to 500 words
         word_freq_df = word_freq_df.sort_values('n', ascending=False).head(500)
 
@@ -49,7 +49,7 @@ class WordFreq(object):
         return json.loads(word_freq_df)
     
 
-    def getWordFreqByDay(self, oldwordcount = None):
+    def get_word_freq_by_day(self, oldwordcount = None):
         # Copy of dataframes
         comments_copy = self.comments.copy()
         posts_copy = self.posts.copy()

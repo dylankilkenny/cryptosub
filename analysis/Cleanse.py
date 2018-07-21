@@ -11,14 +11,14 @@ class Cleanse(object):
         self.stopwords = stopwords
         self.banned_users = banned_users
 
-        self.comments = self.Cleanse(comments)
-        self.posts = self.Cleanse(posts)
+        self.comments = self.cleanse(comments)
+        self.posts = self.cleanse(posts)
         
         
-    def getData(self):
+    def get_data(self):
         return self.comments, self.posts
     
-    def Cleanse(self, data):
+    def cleanse(self, data):
         # Create obj
         data = {"Author": data["Author"], "Text": data["Text"], "Date": data["Date"], "Score": data["Score"] }
         #Change date format
