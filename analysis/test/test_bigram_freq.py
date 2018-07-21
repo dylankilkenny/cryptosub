@@ -8,7 +8,7 @@ posts = MockDF()
 bigram_freq = BigramFreq(comments.getDataframe(), posts.getDataframe())  
 
 def test_bigram_freq():
-    bf = bigram_freq.getBigramFreq(None)
+    bf = bigram_freq.get_bigram_freq(None)
     assert isinstance(bf, list)
     assert len(bf) <= 500
     assert len(bf) > 0
@@ -18,7 +18,7 @@ def test_bigram_freq():
     assert "n" in bf[0]
 
 def test_bigram_freq_with_old():
-    bf = bigram_freq.getBigramFreq(bigram_freq.getBigramFreq(None))
+    bf = bigram_freq.get_bigram_freq(bigram_freq.get_bigram_freq(None))
     assert isinstance(bf, list)
     assert len(bf) <= 500
     assert len(bf) > 0
@@ -29,7 +29,7 @@ def test_bigram_freq_with_old():
     
 
 def test_bigram_freq_by_day():
-    bf = bigram_freq.getBigramFreqByDay(None)
+    bf = bigram_freq.get_bigram_freq_by_day(None)
     print(bf)
     assert isinstance(bf, list)
     assert len(bf) <= 500
@@ -42,8 +42,8 @@ def test_bigram_freq_by_day():
     
 
 def test_bigram_freq_by_day_with_old():
-    old = bigram_freq.getBigramFreqByDay(None)
-    bf = bigram_freq.getBigramFreqByDay(old)
+    old = bigram_freq.get_bigram_freq_by_day(None)
+    bf = bigram_freq.get_bigram_freq_by_day(old)
     assert isinstance(bf, list)
     assert len(bf) <= 500
     assert len(bf) > 0

@@ -21,12 +21,12 @@ db = db(url)
 mock = MockDF()
 dataframe = mock.getDataframe()
 
-bannedusers = db.getBannedUsers()
-stopwords = pd.DataFrame.from_records(data=db.getStopwords())
+bannedusers = db.get_banned_users()
+stopwords = pd.DataFrame.from_records(data=db.get_stopwords())
 
 def test_cleanse():
     clean = Cleanse(dataframe, dataframe, stopwords, bannedusers)
-    comments, posts = clean.getData()
+    comments, posts = clean.get_data()
     assert isinstance(posts, pd.DataFrame)
     assert isinstance(comments, pd.DataFrame)
     assert len(posts.index) > 0

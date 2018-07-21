@@ -8,7 +8,7 @@ posts = MockDF()
 word_freq = WordFreq(comments.getDataframe(), posts.getDataframe())  
 
 def test_word_freq():
-    wf = word_freq.getWordFreq(None)
+    wf = word_freq.get_word_freq(None)
     assert isinstance(wf, list)
     assert len(wf) <= 500
     assert len(wf) > 0
@@ -18,7 +18,7 @@ def test_word_freq():
     assert "n" in wf[0]
 
 def test_word_freq_with_old():
-    wf = word_freq.getWordFreq(word_freq.getWordFreq(None))
+    wf = word_freq.get_word_freq(word_freq.get_word_freq(None))
     assert isinstance(wf, list)
     assert len(wf) <= 500
     assert len(wf) > 0
@@ -29,7 +29,7 @@ def test_word_freq_with_old():
     
 
 def test_word_freq_by_day():
-    wf = word_freq.getWordFreqByDay(None)
+    wf = word_freq.get_word_freq_by_day(None)
     assert isinstance(wf, list)
     assert len(wf) <= 500
     assert len(wf) > 0
@@ -41,7 +41,7 @@ def test_word_freq_by_day():
     
 
 def test_word_freq_by_day_with_old():
-    wf = word_freq.getWordFreqByDay(word_freq.getWordFreqByDay(None))
+    wf = word_freq.get_word_freq_by_day(word_freq.get_word_freq_by_day(None))
     assert isinstance(wf, list)
     assert len(wf) <= 500
     assert len(wf) > 0
