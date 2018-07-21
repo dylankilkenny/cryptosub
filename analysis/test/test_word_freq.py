@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../')
-from WordFreq import WordFreq
+from wordfreq import WordFreq
 from mockdf import MockDF
 
 comments = MockDF()

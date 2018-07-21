@@ -1,9 +1,9 @@
 import sys
 sys.path.append('../')
 
-from Cleanse import Cleanse
+from cleanse import Cleanse
 from mockdf import MockDF
-from MongoDB import MongoDB as db
+from db import MongoDB as db
 import pandas as pd
 import os
 

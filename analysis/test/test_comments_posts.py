@@ -1,9 +1,9 @@
 import sys
 sys.path.append('../')
-from CommentsAndPosts import CommentsPosts
-from MongoDB import MongoDB as db
+from commentpost import CommentsPosts
+from db import MongoDB as db
 import pandas as pd
-from Cleanse import Cleanse
+from cleanse import Cleanse
 from mockdf import MockDF
 import os
 

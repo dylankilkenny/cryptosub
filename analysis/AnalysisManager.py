@@ -5,9 +5,9 @@ from distutils.dir_util import copy_tree
 from pathlib import Path
 from configparser import ConfigParser
 
-from WordFreq import WordFreq
-from Cleanse import Cleanse
-from CommentsAndPosts import CommentsPosts
+from wordfreq import WordFreq
+from cleanse import Cleanse
+from commentpost import CommentsPosts
 from logger import log
 
 

@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../')
-from BigramFreq import BigramFreq
+from bigramfreq import BigramFreq
 from mockdf import MockDF
 
 comments = MockDF()
