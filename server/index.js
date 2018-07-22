@@ -25,6 +25,7 @@ MongoClient.connect(url, (err, client) => {
     if (err) return console.log(err)
     db = client.db('dev')
     app.listen(3000) // start app listening on port 3000
+    console.log("API Running!")
 })
 // ------------------------------ //
 
