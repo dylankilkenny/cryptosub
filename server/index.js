@@ -15,7 +15,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
+ 
 
 // ---------  Database  ---------- //
 const MongoClient = require('mongodb').MongoClient;
@@ -58,6 +58,7 @@ app.get('/AllSubreddits', (req, res) => {
         var updated = filtered.map(function (obj) {
             const currency_mentions = obj.currency_mentions;
             const most_popular = _.maxBy(currency_mentions, 'Mentions_Sym');
+       
             return {
                 most_popular: most_popular.Name,
                 ...obj
@@ -136,23 +137,23 @@ app.post('/BigramByDay', (req, res) => {
 })
 
 
-//Use this cors config for production, allowing authorized origins to connect
-// app.use(function (req, res, next) {
-//     // Website you wish to allow to connect
-//     var allowedOrigins = ['http://localhost:3000', "http://api.cryptoanalytics.ml"];
-//     var origin = req.headers.origin;
-//     if (allowedOrigins.indexOf(origin) > -1) {
-//         res.setHeader('Access-Control-Allow-Origin', origin);
-//     }
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', false);
-//     // Pass to next layer of middleware
-//     next();
-// });
+// Use this cors config for production, allowing authorized origins to connect
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    var allowedOrigins = ['http://localhost:8080'];
+    var origin = req.headers.origin;
+    if (allowedOrigins.indexOf(origin) > -1) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', false);
+    // Pass to next layer of middleware
+    next();
+});
 
 module.exports = app;
