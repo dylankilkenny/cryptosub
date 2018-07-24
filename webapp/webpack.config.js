@@ -3,7 +3,7 @@ const path = require("path");
 const webpack = require('webpack');
 
 const API_URL = {
-  prod: '"http://api.cryptosub.ml/"',
+  prod: '"http://api.cryptosub.live/"',
   dev: '"http://localhost:3000/"'
 }
 
