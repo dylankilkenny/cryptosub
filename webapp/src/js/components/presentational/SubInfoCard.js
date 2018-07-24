@@ -43,7 +43,7 @@ const SubInfoCard = (props) => (
                             displayType={'text'}
                         />
                     </Statistic.Value>
-                    <Statistic.Label>24 Hr Total</Statistic.Label>
+                    <Statistic.Label>24 Hr Activity</Statistic.Label>
                 </Statistic>
             </Grid.Column>
             <Grid.Column>
@@ -65,7 +65,7 @@ const SubInfoCard = (props) => (
                             displayType={'text'}
                         />
                     </Statistic.Value>
-                    <Statistic.Label>7 day Total</Statistic.Label>
+                    <Statistic.Label>7 day Activity</Statistic.Label>
                 </Statistic>
             </Grid.Column>
             <Grid.Column>
@@ -87,7 +87,7 @@ const SubInfoCard = (props) => (
                             displayType={'text'}
                         />
                     </Statistic.Value>
-                    <Statistic.Label>30 day Total</Statistic.Label>
+                    <Statistic.Label>30 day Activity</Statistic.Label>
                 </Statistic>
             </Grid.Column>
             <Grid.Column>
