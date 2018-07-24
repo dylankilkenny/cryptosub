@@ -121,8 +121,8 @@ app.post('/CurrencyMentionsByDay', (req, res) => {
 
 app.post('/WordCountByDay', (req, res) => {
     const subreddit = req.body.subreddit;
-    db.collection('wordcountbd').find({"id":subreddit}).project({
-        "wordcount_by_day":1
+    db.collection('wordfreqbd').find({"id":subreddit}).project({
+        "word_freq_by_day":1
     }).toArray(function(err, result) {
         res.send(result)
     }) 
@@ -130,8 +130,8 @@ app.post('/WordCountByDay', (req, res) => {
 
 app.post('/BigramByDay', (req, res) => {
     const subreddit = req.body.subreddit;
-    db.collection('bigramsbd').find({"id":subreddit}).project({
-        "bigram_by_day":1
+    db.collection('bigramfreqbd').find({"id":subreddit}).project({
+        "bigram_freq_by_day":1
     }).toArray(function(err, result) {
         res.send(result)
     }) 
