@@ -53,11 +53,11 @@ class AnalysisManager(object):
         log("moving files to working directory")                        
         # move to working dir
         copy_tree(self._latest_dir, self._working_dir)
-        # # delete latest dir
-        # shutil.rmtree(self._latest_dir)
-        # # Recreate empty latest dir
-        # if not os.path.exists(self._latest_dir):
-        #     os.makedirs(self._latest_dir)
+        # delete latest dir
+        shutil.rmtree(self._latest_dir)
+        # Recreate empty latest dir
+        if not os.path.exists(self._latest_dir):
+            os.makedirs(self._latest_dir)
     
     def load_datasets(self, subreddit):
         log("Loading datasets for {0}".format(subreddit))
@@ -70,20 +70,20 @@ class AnalysisManager(object):
             self.comments = pd.read_csv(comments_path)
         # else create empty dataframe
         else:
-            self.comments = pd.DataFrame(columns=['Author','Body','Date','Score'])
+            self.comments = pd.DataFrame(columns=['Author','Text','Date','Score'])
         
         if Path(posts_path).is_file():
             self.posts = pd.read_csv(posts_path)
         # else create empty dataframe
         else:
-            self.posts = pd.DataFrame(columns=['Author','Title','Date','Score'])
+            self.posts = pd.DataFrame(columns=['Author','Text','Date','Score'])
         
         # Remove comments and posts files
-        # try:
-        #     os.remove(comments_path)
-        #     os.remove(posts_path)
-        # except OSError:
-        #     pass
+        try:
+            os.remove(comments_path)
+            os.remove(posts_path)
+        except OSError:
+            pass
         
         if self.posts.size < 1 and self.comments.size < 1:
             log("datasets not large enough")
