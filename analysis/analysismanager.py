@@ -15,16 +15,20 @@ from logger import log
 
 class AnalysisManager(object):
 
-    def __init__(self, db, config):
+    def __init__(self, db, config, historical = None):
         self._db = db
         self._config = config
         self._latest_dir = self._config.get('path', 'LatestDirectory')
         self._working_dir = self._config.get('path', 'WorkingDirectory')
+        self._historical_dir = self._config.get('path', 'HistoricalDirectory')
         self._subreddits = self.load_subreddits()
         self._stopwords = self.load_stopwords()
         self._banned_users = self.load_banned_users()
         self._cryptocurrencies = self.load_cryptocurrencies()
-        self.move_files()
+        self._historical = historical
+
+        if self._historical is None:
+            self.move_files()
 
         self.comments = None
         self.posts = None
@@ -42,7 +46,7 @@ class AnalysisManager(object):
         return pd.DataFrame.from_records(data=self._db.get_stopwords())
     
     def load_cryptocurrencies(self):
-        log("loading banned cryptocurrencies")                        
+        log("loading list of cryptocurrencies")                        
         return pd.DataFrame.from_records(data=self._db.get_cryptocurrencies())
     
     def load_banned_users(self):
@@ -62,8 +66,13 @@ class AnalysisManager(object):
     def load_datasets(self, subreddit):
         log("Loading datasets for {0}".format(subreddit))
         
-        comments_path = "{0}comments_{1}.csv".format(self._working_dir, subreddit)
-        posts_path = "{0}posts_{1}.csv".format(self._working_dir, subreddit)
+        if self._historical:
+            directory = self._historical_dir
+        else: 
+            directory = self._working_dir
+
+        comments_path = "{0}comments_{1}.csv".format(directory, subreddit)
+        posts_path = "{0}posts_{1}.csv".format(directory, subreddit)
 
         # if comments file exists load it
         if Path(comments_path).is_file():
