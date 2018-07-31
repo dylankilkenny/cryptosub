@@ -3,6 +3,7 @@
 config.conf
 analysis/latest/*
 analysis/working/*
+analysis/historical/*
 server/node_modules
 webapp/node_modules
 .vscode/
