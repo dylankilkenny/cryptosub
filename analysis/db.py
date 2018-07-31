@@ -35,6 +35,13 @@ class MongoDB:
         )
         return cursor
     
+    def get_post_ids(self):
+        PostIDs = self._db.misc.find({},{"PostIDs": 1})
+        return PostIDs[0]["PostIDs"]
+    
+    def update_post_ids(self, PostID):
+        self._db.misc.update_one({},{'$push': {'PostIDs': PostID}})
+    
     def query_cpbd(self, subreddit):
         cpbd = self._db.commentpostbd.find(
             {
