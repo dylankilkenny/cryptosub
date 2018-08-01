@@ -4,7 +4,7 @@ import { Icon, Label, Popup, Menu, Table } from "semantic-ui-react"
 import TableRow from "./TableRow"
 
 const TableCoin = (props) => (
-  <Table sortable basic='very' color="blue">
+  <Table unstackable compact sortable basic='very' color="blue">
     <Table.Header>
         {/* <Table.HeaderCell
           textAlign='center'

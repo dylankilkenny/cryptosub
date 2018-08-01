@@ -30,7 +30,7 @@ class BigramsFreqContainer extends React.Component {
             .then(response => { return response.json() })
             .then(data => {
                 console.log(data)
-                this.storeData(data[0].bigram_by_day)
+                this.storeData(data[0].bigram_freq_by_day)
             })
             .catch(error => console.log(error))
     }
@@ -44,12 +44,12 @@ class BigramsFreqContainer extends React.Component {
         const latest_date = moment(data[data.length - 1].Date)
         const moment_date = new moment(latest_date).format('YYYY-MM-DD');
         const day = data.filter(day => day.Date == moment_date);
-        const bigram_freq_obj = day[0].counts
-        const day_array = this.handleDayObject(bigram_freq_obj);
+        const bigram_freq_array_day = _.orderBy(day[0].counts, ['n'], ['desc'])
+        
         console.log(latest_date)
         this.setState({
             date: latest_date,
-            day: day_array.slice(0, 15),
+            day: bigram_freq_array_day.slice(0, 15),
             wordsbyday: data
         })
     }
@@ -130,10 +130,9 @@ class BigramsFreqContainer extends React.Component {
                         <Grid.Column width={2}>
                         </Grid.Column>
                         <Grid.Column textAlign="center" width={12}>
-                            {console.log(this.props.BigramCount)}
                             {this.state.alltime ?
                                 <ResponsiveContainer width="99%" height={500}>
-                                    <BarChart layout="vertical" data={this.props.BigramCount}
+                                    <BarChart layout="vertical" data={this.props.bigram_freq}
                                         margin={{ top: 20, right: 30, left: 70, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <XAxis type="number" />

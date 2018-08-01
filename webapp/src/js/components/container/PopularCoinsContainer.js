@@ -30,7 +30,7 @@ class PopularCoinsContainer extends React.Component {
         })
             .then(response => { return response.json() })
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 this.storeData(data)
             })
             .catch(error => console.log(error))
@@ -43,33 +43,16 @@ class PopularCoinsContainer extends React.Component {
 
     storeData = (data) => {
         const latest_date = moment(data[data.length - 1].Date)
-        const moment_date = new moment(latest_date).format('YYYY-MM-DD hh:00:00');
+        const moment_date = new moment(latest_date).format('YYYY-MM-DD');
         const day = data.filter(day => day.Date == moment_date);
         const pop_coins_obj = day[0].counts
         const pop_coins_sorted = _.orderBy(pop_coins_obj, ['n'], ['desc'])
-        // const day_array = this.handleDayObject(bigram_freq_obj);
-        console.log(pop_coins_sorted)
         this.setState({
             date: latest_date,
             day: pop_coins_sorted.slice(0, 10),
             popularcoins: data
         })
     }
-
-    // handleDayObject = (obj) => {
-    //     let day_array = []
-    //     for (var word in obj) {
-    //         if (obj.hasOwnProperty(word)) {
-    //             day_array.push({
-    //                 bigram: word,
-    //                 n: obj[word]
-    //             })
-    //         }
-    //     }
-    //     const day_array_sorted = _.orderBy(day_array, ['n'], ['desc'])
-    //     return day_array_sorted;
-    // }
-
 
     handleButton = (event, data) => {
         if (!data.active) {
@@ -82,7 +65,7 @@ class PopularCoinsContainer extends React.Component {
 
     handleDateChange = (date) => {
         const moment_date = moment(date)
-        const moment_format = moment_date.format('YYYY-MM-DD hh:00:00');
+        const moment_format = moment_date.format('YYYY-MM-DD');
         const popularcoins = this.state.popularcoins;
         const day = popularcoins.filter(day => day.Date == moment_format);  
         const pop_coins_obj = day[0].counts

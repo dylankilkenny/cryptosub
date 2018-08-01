@@ -27,7 +27,7 @@ class Cleanse(object):
         data = pd.DataFrame(data=data)
         #Convert datetime to date
         data["Date"] = data["Date"].dt.strftime('%Y-%m-%d %H:00:00')
-        #Remove URLs  
+        #Remove URLs
         data["Text"] =  data['Text'].str.replace(r'http\S+', '', case=False)
         #Remove Na's
         data = data.dropna(how='any',axis=0)

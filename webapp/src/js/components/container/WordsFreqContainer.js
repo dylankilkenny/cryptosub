@@ -31,8 +31,8 @@ class WordsFreqContainer extends React.Component {
         })
             .then(response => { return response.json() })
             .then(data => {
-                // console.log(data)
-                this.storeData(data[0].wordcount_by_day)
+                console.log(data)
+                this.storeData(data[0].word_freq_by_day)
             })
             .catch(error => console.log(error))
     }
@@ -46,12 +46,12 @@ class WordsFreqContainer extends React.Component {
         const latest_date = moment(data[data.length - 1].Date)
         const moment_date = new moment(latest_date).format('YYYY-MM-DD');
         const day = data.filter(day => day.Date == moment_date);
-        const word_freq_obj = day[0].counts
-        const day_array = this.handleDayObject(word_freq_obj);
-        console.log(latest_date)
+        const word_freq_array_day = _.orderBy(day[0].counts, ['n'], ['desc'])
+        // const day_array = this.handleDayObject(word_freq_obj);
+        console.log(word_freq_array_day)
         this.setState({
             date: latest_date,
-            day: day_array.slice(0, 20),
+            day: word_freq_array_day.slice(0, 20),
             wordsbyday: data
         })
     }
@@ -134,7 +134,7 @@ class WordsFreqContainer extends React.Component {
                         <Grid.Column textAlign="center" width={12}>
                             {this.state.alltime ?
                                 <ResponsiveContainer width="99%" height={400}>
-                                    <BarChart layout="vertical" data={this.props.WordCount}
+                                    <BarChart layout="vertical" data={this.props.word_freq}
                                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <XAxis type="number" />

@@ -54,13 +54,13 @@ class SubredditContainer extends React.Component {
 
     storeData = (data) => {
         const CurrencyMentions = _.orderBy(data[0].currency_mentions, ['n'], ['desc'])
-        const WordCount = _.orderBy(data[0].word_count, ['n'], ['desc'])
-        const BigramCount = _.orderBy(data[0].bigram_count, ['n'], ['desc'])
+        const word_freq = _.orderBy(data[0].word_freq, ['n'], ['desc'])
+        const bigram_freq = _.orderBy(data[0].bigram_freq, ['n'], ['desc'])
         this.setState({
             Subreddit: data[0],
             CurrencyMentions: CurrencyMentions.slice(0, 10),
-            WordCount: WordCount.slice(0, 20),
-            BigramCount: BigramCount.slice(0, 15)
+            word_freq: word_freq.slice(0, 20),
+            bigram_freq: bigram_freq.slice(0, 15)
         })
 
     }
@@ -82,7 +82,7 @@ class SubredditContainer extends React.Component {
 
                         <WordsFreqContainer
                             payload={this.state.payload}
-                            WordCount={this.state.WordCount}
+                            word_freq={this.state.word_freq}
                         />
                     </Tab.Pane>
             },
@@ -91,7 +91,7 @@ class SubredditContainer extends React.Component {
                     <Tab.Pane>
                         <BigramsFreqContainer
                             payload={this.state.payload}
-                            BigramCount={this.state.BigramCount}
+                            bigram_freq={this.state.bigram_freq}
                         />
                     </Tab.Pane>
             },
