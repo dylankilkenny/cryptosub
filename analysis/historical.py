@@ -1,6 +1,7 @@
 from logger import log
 import time
 import praw
+from prawcore.exceptions import PrawcoreException
 import pandas as pd
 import requests
 import json
@@ -93,34 +94,41 @@ class Reddit:
     def gather(self):
         # Loop through post IDs acquired from 
         # shapeshift api
-        for ID in self._post_ids:
-            # Load all processed IDs from db
-            processed = self._db.get_post_ids()
-            # Check if post is already processed
-            if ID not in processed:
-                # Get reddit post
-                submission = self._praw.submission(id=ID)
-                # Save to csv
-                self.save_post([submission.id, submission.title, submission.created_utc, 
-                                submission.score, submission.num_comments, submission.author])
-                self._post_count += 1
-                # Add new post ID to database to prevent processing it again
-                self._db.update_post_ids(submission.id)
-                # Log details
-                self.logger(submission.created_utc)
+        while True:
+            try:
+                for ID in self._post_ids:
+                    # Load all processed IDs from db
+                    processed = self._db.get_post_ids()
+                    # Check if post is already processed
+                    if ID not in processed:
+                        # Get reddit post
+                        submission = self._praw.submission(id=ID)
+                        # Save to csv
+                        self.save_post([submission.id, submission.title, submission.created_utc, 
+                                        submission.score, submission.num_comments, submission.author])
+                        self._post_count += 1
+                        # Add new post ID to database to prevent processing it again
+                        self._db.update_post_ids(submission.id)
+                        # Log details
+                        self.logger(submission.created_utc)
 
-                #If post does not have any comments continue
-                if submission.num_comments < 1:
-                    continue
-                    
-                #If comments have alot of nested replies this will load them also
-                submission.comments.replace_more(limit=0)
-                #Add comments to list
-                for comment in submission.comments.list():
-                    self.save_comment([comment.id, submission.id, comment.body, comment.created_utc, comment.score, comment.author])
-                    self._comment_count += 1
-                    # log details
-                    self.logger(submission.created_utc)
+                        #If post does not have any comments continue
+                        if submission.num_comments < 1:
+                            continue
+                            
+                        #If comments have alot of nested replies this will load them also
+                        submission.comments.replace_more(limit=0)
+                        #Add comments to list
+                        for comment in submission.comments.list():
+                            self.save_comment([comment.id, submission.id, comment.body, comment.created_utc, comment.score, comment.author])
+                            self._comment_count += 1
+                            # log details
+                            self.logger(submission.created_utc)
+                break
+            except Exception as e:
+                print(1)
+                log(e, newline=True)
+
         log("*"*30, newline=True)
                 
     #Display mining information to the terminal
@@ -157,3 +165,7 @@ if __name__ == "__main__":
                 am.bigramfreq()
                 am.currency_mentions()
                 log("*"*30)
+            db.mark_subreddit_done(subreddit)
+
+    db.reset_subreddit_done()
+    

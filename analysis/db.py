@@ -42,6 +42,28 @@ class MongoDB:
     def update_post_ids(self, PostID):
         self._db.misc.update_one({},{'$push': {'PostIDs': PostID}})
     
+    def mark_subreddit_done(self, subreddit):
+        subs = self._db.misc.find({},{'subs': 1})
+        updated = subs[0]["subs"]
+        
+        for sub in updated:
+            if sub["Subreddit"] == subreddit:
+                sub["done"] = 1
+
+        self._db.misc.update({},{"$unset":{"subs":""}})
+        self._db.misc.update_one({},{"$set": {"subs": updated}})
+    
+    def reset_subreddit_done(self):
+        subs = self._db.misc.find({},{'subs': 1})
+        updated = subs[0]["subs"]
+        
+        for sub in updated:
+            sub["done"] = 0
+
+        self._db.misc.update({},{"$unset":{"subs":""}})
+        self._db.misc.update_one({},{"$set": {"subs": updated}})
+        
+    
     def query_cpbd(self, subreddit):
         cpbd = self._db.commentpostbd.find(
             {
