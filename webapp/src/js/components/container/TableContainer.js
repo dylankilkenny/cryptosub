@@ -2,7 +2,8 @@ import React from 'react';
 import Table from "../presentational/Table";
 import MainContentGrid from "../presentational/MainContentGrid";
 import _ from 'lodash';
-import { Grid, Segment, Icon, Button } from 'semantic-ui-react'
+import { Container, Grid, Segment, Icon, Button } from 'semantic-ui-react'
+import Pagination from '../presentational/Pagination';
 
 
 class TableContainer extends React.Component {
@@ -11,21 +12,20 @@ class TableContainer extends React.Component {
         this.state = {
             subs: [],
             SortedColumn: 'Total (24hr)',
-            SortDirection: 'descending'
+            SortDirection: 'descending',
+            page_number: 1,
+            page_size: 20,
+            total_size: null
+
         }
         this.storeSubreddits = this.storeSubreddits.bind(this);
+        this.fetchData = this.fetchData.bind(this);
+        this.handleSort = this.handleSort.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
-        const endpoint = "AllSubreddits"
-        console.log(API_URL)
-        fetch(API_URL + endpoint)
-            .then(response => { return response.json() })
-            .then(data => {
-                console.log(data)
-                this.storeSubreddits(data)
-            })
-            .catch(error => console.log(error))
+        this.fetchData()
     }
 
     componentDidCatch(error, info) {
@@ -33,12 +33,36 @@ class TableContainer extends React.Component {
         console.log(info)
     }
 
+    fetchData = () => {
+        const payload = {
+            page_size: this.state.page_size,
+            page_number: this.state.page_number
+        }
+        const endpoint = "AllSubreddits"
+        fetch(API_URL + endpoint, {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(response => { return response.json() })
+            .then(data => {
+                this.storeSubreddits(data)
+            })
+            .catch(error => console.log(error))
+    }
+
+    handlePageClick = (event) => {
+        this.setState({
+            page_number: event.activePage
+        }, function(){
+            this.fetchData()
+        })
+    }
+
     handleSort = clickedColumn => () => {
-        console.log(clickedColumn)
         const { SortedColumn, subs, SortDirection } = this.state
         if (SortedColumn !== clickedColumn) {
             const SortedSubs = _.orderBy(subs, [clickedColumn], ['desc'])
-            console.log(SortedSubs)
             this.setState({
                 SortedColumn: clickedColumn,
                 subs: SortedSubs,
@@ -52,7 +76,8 @@ class TableContainer extends React.Component {
         })
     }
 
-    storeSubreddits = data => {
+    storeSubreddits = response => {
+        let data = response.data;
         var i = 0;
         var subs = data.map(d => {
             i++;
@@ -70,7 +95,12 @@ class TableContainer extends React.Component {
             }
         })
         subs = _.orderBy(subs, ['thirty_day_total'], ['desc']);
-        this.setState({ subs })
+        this.setState({
+            subs: subs,
+            page_number: response.page_number,
+            total_size: response.total_size,
+            page_size: response.page_size
+        })
     }
 
     render() {
@@ -84,6 +114,13 @@ class TableContainer extends React.Component {
                         direction={this.state.SortDirection}
                         handleSort={this.handleSort}
                     />
+                    <Container textAlign='right'>
+                        <Pagination
+                            total_pages={Math.round(this.state.total_size / this.state.page_size)}
+                            handlePageClick={this.handlePageClick}
+                        />
+                    </Container>
+
                 </MainContentGrid>
             </div>
         )
