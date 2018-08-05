@@ -1,9 +1,20 @@
 import React from 'react'
-import { Button, Header, Icon, Modal, List, Grid } from 'semantic-ui-react'
+import { Button, Responsive, Header, Icon, Modal, List, Grid, Divider } from 'semantic-ui-react'
+
 
 
 const ModalExampleCloseIcon = () => (
-    <Modal trigger={<Button color='yellow' icon='question circle' content='FAQ' />} centered={false} closeIcon>
+    <Modal trigger={
+        <div>
+            <Responsive minWidth={768}>
+                <Button color='yellow' icon='question circle' content='FAQ' />
+            </Responsive>
+            <Responsive maxWidth={768}>
+                <Button size='tiny' color='yellow' content='FAQ' />
+            </Responsive>
+        </div>
+
+    } centered={false} closeIcon>
         <Header icon='question circle' content='FAQ' />
         <Modal.Content>
             <Grid verticalAlign='middle' columns='equal'>

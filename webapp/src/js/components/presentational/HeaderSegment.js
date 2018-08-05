@@ -1,10 +1,8 @@
 import React from 'react'
-import { Segment, Grid, Header } from 'semantic-ui-react'
+import { Segment, Grid, Header, Responsive, Icon } from 'semantic-ui-react'
 import GitHubButton from 'react-github-button';
 import Modal from "./Modal";
-import { Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-
 
 
 const HeaderSegment = (props) => (
@@ -24,18 +22,24 @@ const HeaderSegment = (props) => (
                 </Grid.Column>
                 <Grid.Column>
                 </Grid.Column>
-                <Grid.Column width={6}>
-                    <Header as='h2' textAlign='center'>
-                        Crypto Subreddit Tracker
-                                            </Header>
+                <Grid.Column mobile={4} width={6}>
+                    <Responsive minWidth={768}>
+                        <Header as='h2' textAlign='center'>Crypto Subreddit Tracker</Header>
+                    </Responsive>
+                    <Responsive maxWidth={768}>
+                        <Header as='h4' textAlign='center'>Crypto Subreddit Tracker</Header>
+                    </Responsive>
                 </Grid.Column>
                 <Grid.Column>
                     <Modal />
-
                 </Grid.Column>
                 <Grid.Column>
-                    <GitHubButton type="stargazers" size="large" namespace="dylankilkenny" repo="cryptosub" />
-
+                    <Responsive minWidth={768}>
+                        <GitHubButton type="stargazers" size="large" namespace="dylankilkenny" repo="cryptosub" />
+                    </Responsive>
+                    <Responsive maxWidth={768}>
+                        <GitHubButton type="stargazers" size="default" namespace="dylankilkenny" repo="cryptosub" />
+                    </Responsive>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
