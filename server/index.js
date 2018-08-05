@@ -29,12 +29,19 @@ MongoClient.connect(url, (err, client) => {
 })
 // ------------------------------ //
 
+//
+// https://stackoverflow.com/questions/42761068/paginate-javascript-array
+//
+function paginate (array, page_size, page_number) {
+    --page_number;
+    return array.slice(page_number * page_size, (page_number + 1) * page_size);
+}
 
 app.get('/', (req, res) => {
     res.send("CryptoAnalytics API!")
 })
 
-app.get('/AllSubreddits', (req, res) => {
+app.post('/AllSubreddits', (req, res) => {
     // Get documents from db
     db.collection('subreddits').find().project({
         "one_day_change":1,
@@ -54,9 +61,13 @@ app.get('/AllSubreddits', (req, res) => {
                 obj.one_day_total != 'NA'){
                 return true
             }
-        })
+        }).sort((a, b) => b.thirty_day_total - a.thirty_day_total);
+
+        // Paginate array
+        const paginateArray = paginate(filtered, req.body.page_size, req.body.page_number);
+
         // update array of objects with most popular currency for each sub
-        var updated = filtered.map(function (obj) {
+        var updated = paginateArray.map(function (obj) {
             const currency_mentions = obj.currency_mentions;
             const most_popular = _.maxBy(currency_mentions, 'Mentions_Sym');
        
@@ -65,7 +76,15 @@ app.get('/AllSubreddits', (req, res) => {
                 ...obj
             }
         })
-        res.send(updated)
+
+        const response = {
+            data: updated,
+            page_number: req.body.page_number,
+            page_size: req.body.page_size,
+            total_size: filtered.length
+        }
+        // console.log(filtered)
+        res.send(response)
     }) 
 })
 
