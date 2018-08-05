@@ -169,10 +169,8 @@ class MongoDB:
                 },upsert=True
             )
         
-        if update.modified_count > 0:
-            log("Number of comments and posts by day: updated.")
-        else:
-            log("Number of comments and posts by day: modified count 0.")
+        log("Number of comments and posts by day: updated.")
+
     
 
     def set_comments_posts_activity(self, subreddit, one_day_total, one_day_change, seven_day_total, seven_day_change, thirty_day_total, thirty_day_change):
