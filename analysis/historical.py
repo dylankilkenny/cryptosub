@@ -144,6 +144,9 @@ if __name__ == "__main__":
     am = AnalysisManager(db, parser, historical=True)
 
     for i, row in am._subreddits.iterrows():
+        if row["done"] == 1:
+            log("%s already processed, skipping!" % row["Subreddit"])
+            continue
         subreddit = row["Subreddit"]
         log("Gathering post ID's")
         pushshift = Pushshift(sys.argv[1], sys.argv[2], subreddit)
