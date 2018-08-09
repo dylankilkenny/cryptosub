@@ -38,7 +38,7 @@ const HeaderSegment = (props) => (
                         <GitHubButton type="stargazers" size="large" namespace="dylankilkenny" repo="cryptosub" />
                     </Responsive>
                     <Responsive maxWidth={768}>
-                        <GitHubButton type="stargazers" size="default" namespace="dylankilkenny" repo="cryptosub" />
+                        <GitHubButton type="stargazers" namespace="dylankilkenny" repo="cryptosub" />
                     </Responsive>
                 </Grid.Column>
             </Grid.Row>
