@@ -148,8 +148,8 @@ class AnalysisManager(object):
         # in the doc, if so pass it to word freq class
         # where old and new data will be merged
         old_word_freq = None
-        if "word_count" in subreddit_doc[0]:
-            old_word_freq = subreddit_doc[0]["word_count"]
+        if "word_freq" in subreddit_doc[0]:
+            old_word_freq = subreddit_doc[0]["word_freq"]
         word_freq = WF.get_word_freq(old_word_freq)
         self._db.set_word_freq(word_freq, self.subreddit)
 
@@ -175,8 +175,8 @@ class AnalysisManager(object):
         # in the doc, if so pass it to word freq class
         # where old and new data will be merged
         old_bigram_freq = None
-        if "word_count" in subreddit_doc[0]:
-            old_bigram_freq = subreddit_doc[0]["word_count"]
+        if "bigram_freq" in subreddit_doc[0]:
+            old_bigram_freq = subreddit_doc[0]["bigram_freq"]
         bigram_freq = BF.get_bigram_freq(old_bigram_freq)
         self._db.set_bigram_freq(bigram_freq, self.subreddit)
 
