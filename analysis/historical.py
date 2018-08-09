@@ -41,11 +41,15 @@ class Pushshift:
             time.sleep(1)
 
     def query_pushshift(self):
-        url = 'https://api.pushshift.io/reddit/search/submission?&size=1000&after={0}&before={1}&subreddit={2}'.format(
-            self._after_date, self._before_date, self._subreddit)
-        r = requests.get(url)
-        data = json.loads(r.text)
-        return data['data']
+        try:
+            url = 'https://api.pushshift.io/reddit/search/submission?&size=1000&after={0}&before={1}&subreddit={2}'.format(
+                self._after_date, self._before_date, self._subreddit)
+            r = requests.get(url)
+            data = json.loads(r.text)
+            return data['data']
+        except json.decoder.JSONDecodeError:
+            log('Decoding JSON has failed')
+            print(r.text)
 
 
 class Reddit:
