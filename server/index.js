@@ -136,6 +136,7 @@ app.post("/CommentsPostsByDay", (req, res) => {
         return {
           MonthDay: new moment(obj.Date).format("MMM Do"),
           Moment: new moment(obj.Date),
+          n: obj.n_comment + obj.n_post,
           ...obj
         };
       });
