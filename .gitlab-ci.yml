@@ -1,13 +1,13 @@
 test:
-  services: 
-  - mongo
+  services:
+    - mongo
   image: python:3.6
   variables:
-    ENV: 'test'
+    ENV: "test"
   script:
-  - apt-get update -q -y
-  - pip3 install -r requirements.txt
-  - cd analysis
-  - python3 setup.py
-  - cd test
-  - pytest
+    - apt-get update -q -y
+    - cd analysis
+    - pip3 install -r requirements.txt
+    - python3 setup.py
+    - cd test
+    - pytest
