@@ -10,7 +10,7 @@ class TableContainer extends React.Component {
     super(props);
     this.state = {
       subs: [],
-      SortedColumn: "Total (24hr)",
+      SortedColumn: "Activity (30d)",
       SortDirection: "descending",
       page_number: 1,
       page_size: 20,
@@ -62,12 +62,12 @@ class TableContainer extends React.Component {
     );
   };
 
-  handleSort = clickedColumn => () => {
+  handleSort = (clickedColumn, title) => () => {
     const { SortedColumn, subs, SortDirection } = this.state;
-    if (SortedColumn !== clickedColumn) {
+    if (SortedColumn !== title) {
       const SortedSubs = _.orderBy(subs, [clickedColumn], ["desc"]);
       this.setState({
-        SortedColumn: clickedColumn,
+        SortedColumn: title,
         subs: SortedSubs,
         SortDirection: "descending"
       });
