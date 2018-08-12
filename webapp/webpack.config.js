@@ -1,13 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
-const webpack = require('webpack');
+const webpack = require("webpack");
 
-const API_URL = {
-  prod: '"http://api.cryptosub.live/"',
-  dev: '"http://localhost:3000/"'
-}
+let API_URL = require("./api.json");
 
-const environment = process.env.NODE_ENV === 'prod' ? 'prod' : 'dev';
+const environment = process.env.NODE_ENV === "prod" ? "prod" : "dev";
 
 module.exports = {
   devServer: {
@@ -31,17 +28,18 @@ module.exports = {
           }
         ]
       },
-      { test: /\.css$/, 
-        include: /node_modules/, 
-        loaders: ['style-loader', 'css-loader'] 
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loaders: ["style-loader", "css-loader"]
       },
       // {
       //   test: /\.less$/,
-      //   use: 
+      //   use:
       //     [
       //       "style-loader",
       //       {
-      //         loader: 'css-loader', 
+      //         loader: 'css-loader',
       //         options: {sourceMap: 1}
       //       },
       //       {
@@ -49,14 +47,15 @@ module.exports = {
       //         options: {
       //           plugins: () => [require('autoprefixer')]
       //         }
-      //       }, 
+      //       },
       //       "less-loader"
       //     ]
       // },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
-      }    ]
+        loader: "url-loader?limit=100000"
+      }
+    ]
   },
   plugins: [
     new HtmlWebPackPlugin({

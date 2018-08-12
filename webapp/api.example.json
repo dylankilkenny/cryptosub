@@ -1,0 +1,4 @@
+{
+    "prod": "'http://website.com/'",
+    "dev": "'http://localhost:3000/'"
+}

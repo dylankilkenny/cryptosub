@@ -190,12 +190,11 @@ app.post("/BigramByDay", (req, res) => {
 
 // Use this cors config for production, allowing authorized origins to connect
 app.use(function(req, res, next) {
-  // Website you wish to allow to connect
-  var allowedOrigins = [
-    "http://localhost:8080",
-    "http://cryptosub.live",
-    "http://www.cryptosub.live"
-  ];
+  var allowedOrigins;
+  fs.readFile("origins.json", "utf8", function(err, data) {
+    if (err) throw err;
+    allowedOrigins = JSON.parse(data);
+  });
   var origin = req.headers.origin;
   console.log(origin);
   if (allowedOrigins.indexOf(origin) > -1) {
