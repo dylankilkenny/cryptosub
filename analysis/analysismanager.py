@@ -88,16 +88,24 @@ class AnalysisManager(object):
             self.posts = pd.DataFrame(
                 columns=['Author', 'Text', 'Date', 'Score'])
 
-        # Remove comments and posts files
+        # Remove posts file
         try:
-            os.remove(comments_path)
             os.remove(posts_path)
         except OSError as ose:
             log(ose)
             pass
 
+        # Remove comments file
+        try:
+            os.remove(comments_path)
+        except OSError as ose:
+            log(ose)
+            pass
+
+        self.cleanse_datasets()
+
         if self.posts.size < 1 and self.comments.size < 1:
-            log("datasets not large enough")
+            log("datasets not large enough, skipping")
             return False
         else:
             log("datasets loaded")

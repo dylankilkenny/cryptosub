@@ -185,7 +185,6 @@ if __name__ == "__main__":
             log("Processing: " + subreddit)
             loaded = am.load_datasets(subreddit)
             if loaded:
-                am.cleanse_datasets()
                 am.comments_and_posts()
                 am.wordfreq()
                 am.bigramfreq()
