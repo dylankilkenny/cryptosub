@@ -5,7 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import { Segment, Grid, Header } from "semantic-ui-react";
+import { Segment, Grid, Checkbox, Header } from "semantic-ui-react";
 import { DateRangePicker } from "react-dates";
 
 const ChartHeader = ({
@@ -14,14 +14,14 @@ const ChartHeader = ({
   handleDateChange,
   focusedInput,
   handleFocusChange,
-  dates_limit
+  dates_limit,
+  handleCheckBoxChange,
+  activityChecked
 }) => (
   <Grid verticalAlign="middle" columns="equal">
     <Grid.Row>
       <Grid.Column />
-      <Grid.Column textAlign="center">
-        {console.log(dates_limit.earliest)}
-        {console.log(dates_limit.closest)}
+      <Grid.Column textAlign="right">
         <DateRangePicker
           showClearDates={true}
           small={true}
@@ -40,6 +40,16 @@ const ChartHeader = ({
           onFocusChange={focusedInput => {
             handleFocusChange(focusedInput);
           }}
+        />
+      </Grid.Column>
+      <Grid.Column width={3} textAlign="center">
+        <Checkbox
+          checked={activityChecked}
+          onClick={(data, event) => {
+            handleCheckBoxChange(event);
+          }}
+          label="Activity SMA"
+          toggle
         />
       </Grid.Column>
     </Grid.Row>
