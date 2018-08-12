@@ -168,7 +168,7 @@ if __name__ == "__main__":
             log("%s already processed, skipping!" % row["Subreddit"])
             continue
         subreddit = row["Subreddit"]
-        log("Gathering post ID's")
+        log("Gathering post ID's for %s" % row["Subreddit"])
         pushshift = Pushshift(sys.argv[1], sys.argv[2], subreddit)
         post_ids = pushshift._post_ids
         reddit = Reddit(db, subreddit, post_ids)
