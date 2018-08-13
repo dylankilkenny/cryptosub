@@ -6,9 +6,14 @@ import { Link } from "react-router-dom";
 
 const TableRow = props => (
   <Table.Row textAlign="center">
-    {/* <Table.Cell>{props.rank}</Table.Cell> */}
+    <Table.Cell>{props.rank}</Table.Cell>
     <Table.Cell textAlign="left">
-      <Link to={`/${props.subreddit}`}>
+      <Link
+        to={{
+          pathname: `/${props.subreddit}`,
+          state: { rank: props.rank }
+        }}
+      >
         r/
         {props.subreddit}
       </Link>

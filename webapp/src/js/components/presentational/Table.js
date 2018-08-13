@@ -7,13 +7,13 @@ const TableCoin = props => (
   <Table unstackable compact sortable basic="very" color="blue">
     <Table.Header>
       <Table.Row>
-        {/* <Table.HeaderCell
-          textAlign='center'
-          sorted={props.column === '#' ? props.direction : null}
-          onClick={props.handleSort('rank')}
-          >
-          #   
-        </Table.HeaderCell> */}
+        <Table.HeaderCell
+          textAlign="center"
+          sorted={props.column === "#" ? props.direction : null}
+          onClick={props.handleSort("rank", "#")}
+        >
+          #
+        </Table.HeaderCell>
         <Table.HeaderCell
           textAlign="center"
           sorted={props.column === "Subreddit" ? props.direction : null}

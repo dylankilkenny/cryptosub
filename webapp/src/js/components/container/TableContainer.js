@@ -86,7 +86,7 @@ class TableContainer extends React.Component {
       i++;
       return {
         key: i,
-        rank: i,
+        rank: d.rank,
         subreddit: d.id,
         most_popular: d.most_popular,
         tf_hr_total: d.one_day_total,

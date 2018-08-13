@@ -83,11 +83,12 @@ app.post("/AllSubreddits", (req, res) => {
       );
 
       // update array of objects with most popular currency for each sub
-      var updated = paginateArray.map(function(obj) {
+      var updated = paginateArray.map(function(obj, index) {
         const currency_mentions = obj.currency_mentions;
         const most_popular = _.maxBy(currency_mentions, "n");
 
         return {
+          rank: index + 1,
           most_popular: most_popular.Name,
           ...obj
         };
