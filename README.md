@@ -7,7 +7,7 @@ Cryptocurrency subreddit tracker - Work in progress!
 * NodeJS
 
 
-#### Download and install - Mac/Linux
+### Download and install - Mac/Linux
 ```console
 $ git clone https://github.com/dylankilkenny/cryptosub.git
 $ cd cryptosub
@@ -16,9 +16,9 @@ $ source bin/activate
 $ make
 ```
 
-#### Running locally
+### Running locally
 Before running any of the components, make sure a mongodb instance is running on localhost with the default port.
-##### Subreddit Analysis
+#### Subreddit Analysis
 The `/analysis` folder contains all the files required for collecting and analysisng reddit submissions. Currently there are 2 processes for collecting submissions, `reddit.py` which listens for new posts and `historical.py` which gathers old posts. You will need to generate OAuth keys for reddit. Follow this guide https://github.com/reddit-archive/reddit/wiki/OAuth2 and put the keys, and your login details in `/analysis/config.conf`
 ```console
 $ cd analysis
@@ -28,22 +28,22 @@ By running reddit.py a stream connection will be opened to reddit.com. A filter 
 
 `historical.py` gathers old submissions on reddit and is entirely optional. Two dates need to be passed in epoch timestamp format when running this script.
 
-```
+```console
 $ python3 historical.py 1534108501 1533158101
 ```
 The first argument is the start date (e.g. 12/08/2018) and the second argument is the end date (e.g. 01/08/2018)
 
 
-##### Server
+#### Server
 A NodeJS server with expressJS retrieves data from the MongoDB database and sends it to the Web App. 
 Runs on port 3000
-```    
+```console
 $ cd server
 $ npm run-script dev
 ``` 
-##### Web App
+#### Web App
 ReactJS web application
-```    
+```console    
 $ cd webapp
 $ npm run-script dev
 ``` 
