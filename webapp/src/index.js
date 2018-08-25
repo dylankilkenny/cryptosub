@@ -1,29 +1,37 @@
-import 'semantic-ui-css/semantic.min.css';
-import 'react-github-button/assets/style.css';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import HeaderSegment from "./js/components/presentational/HeaderSegment";
+import "semantic-ui-css/semantic.min.css";
+import "react-github-button/assets/style.css";
+import ReactDOM from "react-dom";
+import React from "react";
 import TableContainer from "./js/components/container/TableContainer";
 import SubredditContainer from "./js/components/container/SubredditContainer";
-import { Grid, Segment, Icon, Button } from 'semantic-ui-react'
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
+import { Grid, Segment, Icon, Button } from "semantic-ui-react";
+import {
+  Switch,
+  Route,
+  withRouter,
+  BrowserRouter as Router
+} from "react-router-dom";
+import withAnalytics, { initAnalytics } from "react-with-analytics";
 
+initAnalytics(GA_KEY);
+
+const Root = () => (
+  <Switch>
+    <Route exact path="/" component={TableContainer} />
+    <Route path="/:subreddit" component={SubredditContainer} />
+  </Switch>
+);
+
+const AppWithRouter = withRouter(withAnalytics(Root));
 
 class App extends React.Component {
-    render() {
-        return (
-            <Router>
-                <Switch>
-                    <Route exact path='/' component={TableContainer} />
-                    <Route path='/:subreddit' component={SubredditContainer} />
-                </Switch>
-            </Router>
-        );
-    }
+  render() {
+    return (
+      <Router>
+        <AppWithRouter />
+      </Router>
+    );
+  }
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
-
-
-
-

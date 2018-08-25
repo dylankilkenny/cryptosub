@@ -64,7 +64,8 @@ module.exports = {
       filename: "./index.html"
     }),
     new webpack.DefinePlugin({
-      API_URL: API_URL[environment]
+      API_URL: API_URL[environment],
+      GA_KEY: JSON.stringify(process.env.GA_KEY)
     })
   ]
 };
