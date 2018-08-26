@@ -10,27 +10,50 @@ import {
   Modal,
   List,
   Grid,
-  Card
+  Card,
+  Responsive
 } from "semantic-ui-react";
 
 const MainContentGrid = ({ children, width }) => (
-  <Grid columns="equal">
-    <Grid.Row>
-      <Grid.Column textAlign="center">
-        <HeaderSegment />
-      </Grid.Column>
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column />
-      <Grid.Column width={width}>{children}</Grid.Column>
-      <Grid.Column />
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column textAlign="center">
-        <Footer />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
+  <div>
+    <Responsive minWidth={768}>
+      <Grid columns="equal">
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <HeaderSegment />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column />
+          <Grid.Column width={width}>{children}</Grid.Column>
+          <Grid.Column />
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <Footer />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Responsive>
+
+    <Responsive maxWidth={768}>
+      <Grid columns="equal">
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <HeaderSegment />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={width}>{children}</Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <Footer />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Responsive>
+  </div>
 );
 
 MainContentGrid.propTypes = {
