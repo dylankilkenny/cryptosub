@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import React from "react";
 import TableContainer from "./js/components/container/TableContainer";
 import SubredditContainer from "./js/components/container/SubredditContainer";
-import { Grid, Segment, Icon, Button } from "semantic-ui-react";
 import {
   Switch,
   Route,

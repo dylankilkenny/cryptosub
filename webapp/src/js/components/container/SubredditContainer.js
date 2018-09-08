@@ -1,28 +1,37 @@
-import React from "react";
-import ChartContainer from "./ChartContainer";
-import PopularCoinsContainer from "./PopularCoinsContainer";
-import WordsFreqContainer from "./WordsFreqContainer";
-import SubInfoCard from "../presentational/SubInfoCard";
-import MainContentGrid from "../presentational/MainContentGrid";
-import _ from "lodash";
-import { Grid, Segment, Icon, Button, Header, Tab } from "semantic-ui-react";
-import BigramsFreqContainer from "./BigramsFreqContainer";
+import React from 'react';
+import ChartContainer from './ChartContainer';
+import PopularCoinsContainer from './PopularCoinsContainer';
+import WordsFreqContainer from './WordsFreqContainer';
+import SubInfoCard from '../presentational/SubInfoCard';
+import MainContentGrid from '../presentational/MainContentGrid';
+import _ from 'lodash';
+import { Grid, Header, Tab } from 'semantic-ui-react';
+import BigramsFreqContainer from './BigramsFreqContainer';
 
 class SubredditContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      payload: JSON.stringify({ subreddit: this.props.match.params.subreddit })
+      payload: JSON.stringify({ subreddit: this.props.match.params.subreddit }),
+      panesHashbang: [
+        '#CommentsandPosts',
+        '#MostPopularCoins',
+        '#WordFrequency',
+        '#BigramFrequency'
+      ],
+      activeIndex: 0
     };
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.storeData = this.storeData.bind(this);
   }
 
   componentDidMount() {
-    const endpoint = "Subreddit";
+    const endpoint = 'Subreddit';
+
     fetch(API_URL + endpoint, {
-      method: "POST",
+      method: 'POST',
       body: this.state.payload,
-      headers: { "Content-Type": "application/json" }
+      headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
         return response.json();
@@ -39,23 +48,38 @@ class SubredditContainer extends React.Component {
     console.log(data);
     const CurrencyMentions = _.orderBy(
       data[0].currency_mentions,
-      ["n"],
-      ["desc"]
+      ['n'],
+      ['desc']
     );
-    const word_freq = _.orderBy(data[0].word_freq, ["n"], ["desc"]);
-    const bigram_freq = _.orderBy(data[0].bigram_freq, ["n"], ["desc"]);
+    const word_freq = _.orderBy(data[0].word_freq, ['n'], ['desc']);
+    const bigram_freq = _.orderBy(data[0].bigram_freq, ['n'], ['desc']);
+
+    const hashbang = window.location.hash;
+    let activeIndex;
+    if (hashbang) {
+      activeIndex = this.state.panesHashbang.indexOf(hashbang);
+    } else {
+      activeIndex = 0;
+    }
     this.setState({
       Subreddit: data[0],
       CurrencyMentions: CurrencyMentions.slice(0, 10),
       word_freq: word_freq.slice(0, 20),
-      bigram_freq: bigram_freq.slice(0, 15)
+      bigram_freq: bigram_freq.slice(0, 15),
+      activeIndex: activeIndex
     });
+  };
+
+  handleTabChange = (e, { activeIndex }) => {
+    const paneTitle = this.state.panesHashbang[activeIndex];
+    window.history.replaceState(null, null, paneTitle);
+    this.setState({ activeIndex });
   };
 
   render() {
     const panes = [
       {
-        menuItem: "Comments and Posts",
+        menuItem: 'Comments and Posts',
         render: () => (
           <Tab.Pane>
             <Header textAlign="center" as="h2">
@@ -69,7 +93,7 @@ class SubredditContainer extends React.Component {
         )
       },
       {
-        menuItem: "Most Popular Coins",
+        menuItem: 'Most Popular Coins',
         render: () => (
           <Tab.Pane>
             <PopularCoinsContainer
@@ -80,7 +104,7 @@ class SubredditContainer extends React.Component {
         )
       },
       {
-        menuItem: "Word Frequency",
+        menuItem: 'Word Frequency',
         render: () => (
           <Tab.Pane>
             <WordsFreqContainer
@@ -91,7 +115,7 @@ class SubredditContainer extends React.Component {
         )
       },
       {
-        menuItem: "Bigram Frequency",
+        menuItem: 'Bigram Frequency',
         render: () => (
           <Tab.Pane>
             <BigramsFreqContainer
@@ -102,7 +126,6 @@ class SubredditContainer extends React.Component {
         )
       }
     ];
-
     return (
       <div>
         <MainContentGrid width={14}>
@@ -110,8 +133,14 @@ class SubredditContainer extends React.Component {
             <Grid.Row stretched>
               <Grid.Column width={4}>
                 <Header as="h1">
-                  r/
-                  {this.props.match.params.subreddit}
+                  <a
+                    href={`http://reddit.com/r/${
+                      this.props.match.params.subreddit
+                    }`}
+                  >
+                    r/
+                    {this.props.match.params.subreddit}
+                  </a>
                 </Header>
               </Grid.Column>
               <Grid.Column width={12}>
@@ -124,7 +153,11 @@ class SubredditContainer extends React.Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={16}>
-                <Tab panes={panes} />
+                <Tab
+                  activeIndex={this.state.activeIndex}
+                  onTabChange={this.handleTabChange}
+                  panes={panes}
+                />
               </Grid.Column>
             </Grid.Row>
           </Grid>

@@ -108,26 +108,24 @@ class TableContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <MainContentGrid width={12}>
-          <div>
-            <Table
-              subreddits={this.state.subs}
-              column={this.state.SortedColumn}
-              direction={this.state.SortDirection}
-              handleSort={this.handleSort}
+      <MainContentGrid width={12}>
+        <div>
+          <Table
+            subreddits={this.state.subs}
+            column={this.state.SortedColumn}
+            direction={this.state.SortDirection}
+            handleSort={this.handleSort}
+          />
+          <Container textAlign="right">
+            <Pagination
+              total_pages={Math.round(
+                this.state.total_size / this.state.page_size
+              )}
+              handlePageClick={this.handlePageClick}
             />
-            <Container textAlign="right">
-              <Pagination
-                total_pages={Math.round(
-                  this.state.total_size / this.state.page_size
-                )}
-                handlePageClick={this.handlePageClick}
-              />
-            </Container>
-          </div>
-        </MainContentGrid>
-      </div>
+          </Container>
+        </div>
+      </MainContentGrid>
     );
   }
 }
