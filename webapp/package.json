@@ -5,6 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "dev": "NODE_ENV=prod webpack-dev-server --open --mode development",
+    "dev-lan": "NODE_ENV=prod webpack-dev-server --open --mode development --host 192.168.0.215",
     "build": "NODE_ENV=prod webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
