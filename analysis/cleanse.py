@@ -30,7 +30,7 @@ class Cleanse(object):
         #Create df
         data = pd.DataFrame(data=data)
         #Convert datetime to date
-        data["Date"] = data["Date"].dt.strftime('%Y-%m-%d %H:00:00')
+        data["Date"] = data["Date"].dt.strftime('%Y-%m-%d')
         #Remove URLs
         data["Text"] = data['Text'].str.replace(r'http\S+', '', case=False)
         #Remove Numbers

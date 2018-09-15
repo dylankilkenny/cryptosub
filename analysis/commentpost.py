@@ -36,7 +36,7 @@ class CommentsPosts(object):
         # get the date in last row
         last_row_date = last_row.iloc[0]["Date"]
         # to object
-        last_row_date = datetime.strptime(last_row_date, '%Y-%m-%d %H:%M:%S')
+        last_row_date = datetime.strptime(last_row_date, '%Y-%m-%d')
         # take the period (e.g. 1 day) away from the date
         date_minus_period = last_row_date - timedelta(days=period)
 
@@ -83,6 +83,7 @@ class CommentsPosts(object):
         # Copy comments and posts dataframes
         cbd_copy = self.comments.copy()
         pbd_copy = self.posts.copy()
+
         # Group by date, assigning the number of post/comments to a new column
         # and merge the two dataframes into one.
         cbd = cbd_copy.groupby(
