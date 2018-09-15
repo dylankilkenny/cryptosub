@@ -195,6 +195,7 @@ app.post('/Global', async (req, res) => {
   const subreddits = req.body.subreddits;
   const tick = req.body.tick;
   var subsArray = [];
+  var shortestArr = 1000000;
   try {
     //Loop through selected subreddits,
     //retrieving each ones activity from db
@@ -207,9 +208,14 @@ app.post('/Global', async (req, res) => {
         })
         .toArray();
 
+      const arr = resp[0].comments_posts_by_day;
+      // Find the shortest array. Some subreddits have different
+      // amounts of data collected depending on what stage they are
+      // in the collection process. So all arrays will be shortend to
+      // the shortest array.
+      shortestArr = arr.length < shortestArr ? arr.length : shortestArr;
       //Map through returned array, creating new objects
       //with comments and posts summed, as well as sma calc
-      const arr = resp[0].comments_posts_by_day;
       let activity = arr.map(function(obj) {
         return {
           date: obj.Date,
@@ -220,8 +226,10 @@ app.post('/Global', async (req, res) => {
       subsArray.push(activityWithSma);
     }
     //Transform the mupltiple arrays of multiple objects
-    //to one array of multiple objects.
-    const activity = addActivityOneObject(subsArray);
+    //to one array of multiple objects. tick is taken away from the
+    // shortestArr param as the sma function further shortens the arrays
+    // by the tick length
+    const activity = addActivityOneObject(subsArray, shortestArr - tick);
 
     //Retrive subreddit list
     let subList = await db
@@ -243,28 +251,6 @@ app.post('/Global', async (req, res) => {
   }
 });
 
-async function subredditList() {
-  let subList = await db
-    .collection('misc')
-    .find({})
-    .project({
-      subs: 1
-    })
-    .toArray(function(err, result) {
-      const subs = result[0].subs;
-      let list = subs.map(itm => ({
-        key: itm.Symbol,
-        value: itm.Subreddit,
-        text: itm.Subreddit
-      }));
-      console.log('help');
-      return list;
-    });
-  console.log('ss');
-
-  return subList;
-}
-
 function calcSma(sub, tick, activity) {
   let idx = tick - 1;
   const sub_activity = activity.map(act => act[sub]);
@@ -282,14 +268,20 @@ function calcSma(sub, tick, activity) {
   return arr;
 }
 
-function addActivityOneObject(arr) {
-  let firstArray = arr[0];
-  arr.shift();
+function addActivityOneObject(arrays, shortestArr) {
+  // Arrays are shortened to the shortest array size
+  for (a in arrays) {
+    arrays[a] = arrays[a].slice(shortestArr * -1);
+  }
+  // Retrive first array to start initial loop with
+  let firstArray = arrays[0];
+  arrays.shift();
   let combinedActivity = [];
   firstArray.forEach((itm, i) => {
+    //Create array of objects to be destructered
     let objects = [itm];
-    for (var j = 0; j < arr.length; j++) {
-      objects.push(arr[j][i]);
+    for (var j = 0; j < arrays.length; j++) {
+      objects.push(arrays[j][i]);
     }
     combinedActivity.push(Object.assign({}, ...objects));
   });
