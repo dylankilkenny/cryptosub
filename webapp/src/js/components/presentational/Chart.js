@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Segment,
@@ -11,7 +11,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend
-} from "recharts";
+} from 'recharts';
 
 const VolumeChart = ({ data, activityChecked }) => (
   <ResponsiveContainer width="99%" height={400}>

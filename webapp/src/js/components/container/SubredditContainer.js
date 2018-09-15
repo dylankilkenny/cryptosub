@@ -27,7 +27,6 @@ class SubredditContainer extends React.Component {
 
   componentDidMount() {
     const endpoint = 'Subreddit';
-
     fetch(API_URL + endpoint, {
       method: 'POST',
       body: this.state.payload,
@@ -45,7 +44,6 @@ class SubredditContainer extends React.Component {
   }
 
   storeData = data => {
-    console.log(data);
     const CurrencyMentions = _.orderBy(
       data[0].currency_mentions,
       ['n'],

@@ -1,17 +1,17 @@
-import React from "react";
-import Table from "../presentational/Table";
-import MainContentGrid from "../presentational/MainContentGrid";
-import _ from "lodash";
-import { Container, Grid, Segment, Icon, Button } from "semantic-ui-react";
-import Pagination from "../presentational/Pagination";
+import React from 'react';
+import Table from '../presentational/Table';
+import MainContentGrid from '../presentational/MainContentGrid';
+import _ from 'lodash';
+import { Container, Grid, Segment, Icon, Button } from 'semantic-ui-react';
+import Pagination from '../presentational/Pagination';
 
 class TableContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       subs: [],
-      SortedColumn: "Activity (30d)",
-      SortDirection: "descending",
+      SortedColumn: 'Activity (30d)',
+      SortDirection: 'descending',
       page_number: 1,
       page_size: 20,
       total_size: null
@@ -36,11 +36,11 @@ class TableContainer extends React.Component {
       page_size: this.state.page_size,
       page_number: this.state.page_number
     };
-    const endpoint = "AllSubreddits";
+    const endpoint = 'AllSubreddits';
     fetch(API_URL + endpoint, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(payload),
-      headers: { "Content-Type": "application/json" }
+      headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
         return response.json();
@@ -65,17 +65,17 @@ class TableContainer extends React.Component {
   handleSort = (clickedColumn, title) => () => {
     const { SortedColumn, subs, SortDirection } = this.state;
     if (SortedColumn !== title) {
-      const SortedSubs = _.orderBy(subs, [clickedColumn], ["desc"]);
+      const SortedSubs = _.orderBy(subs, [clickedColumn], ['desc']);
       this.setState({
         SortedColumn: title,
         subs: SortedSubs,
-        SortDirection: "descending"
+        SortDirection: 'descending'
       });
       return;
     }
     this.setState({
       subs: subs.reverse(),
-      SortDirection: SortDirection === "ascending" ? "descending" : "ascending"
+      SortDirection: SortDirection === 'ascending' ? 'descending' : 'ascending'
     });
   };
 
@@ -97,7 +97,7 @@ class TableContainer extends React.Component {
         thirty_day_change: d.thirty_day_change
       };
     });
-    subs = _.orderBy(subs, ["thirty_day_total"], ["desc"]);
+    subs = _.orderBy(subs, ['thirty_day_total'], ['desc']);
     this.setState({
       subs: subs,
       page_number: response.page_number,

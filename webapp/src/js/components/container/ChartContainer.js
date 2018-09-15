@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import sma from "sma";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import sma from 'sma';
 
-import moment from "moment";
-import _ from "lodash";
-import { Segment, Grid, Header } from "semantic-ui-react";
+import moment from 'moment';
+import _ from 'lodash';
+import { Segment, Grid, Header } from 'semantic-ui-react';
 
-import ChartHeader from "../presentational/ChartHeader";
-import Chart from "../presentational/Chart";
+import ChartHeader from '../presentational/ChartHeader';
+import Chart from '../presentational/Chart';
 
 class ChartContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tick: 24,
+      tick: 7,
       activityChecked: true
     };
     this.storeData = this.storeData.bind(this);
@@ -24,10 +24,10 @@ class ChartContainer extends React.Component {
     this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this);
   }
   componentDidMount() {
-    fetch(API_URL + "CommentsPostsByDay", {
-      method: "POST",
+    fetch(API_URL + 'CommentsPostsByDay', {
+      method: 'POST',
       body: this.props.payload,
-      headers: { "Content-Type": "application/json" }
+      headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
         return response.json();
@@ -60,7 +60,7 @@ class ChartContainer extends React.Component {
 
   storeData = data => {
     const closest_date = moment(data[data.length - 1].Date),
-      furthest_date = moment(data[data.length - 1].Date).subtract(7, "days");
+      furthest_date = moment(data[data.length - 1].Date).subtract(30, 'days');
     const sma_activity = this.activityMovingAverage(data);
     this.setState(
       {
