@@ -14,7 +14,7 @@ class ChartContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tick: 7,
+      tick: 60,
       activityChecked: true
     };
     this.storeData = this.storeData.bind(this);

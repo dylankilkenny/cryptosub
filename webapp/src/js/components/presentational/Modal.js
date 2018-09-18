@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   Responsive,
@@ -8,7 +8,7 @@ import {
   List,
   Grid,
   Divider
-} from "semantic-ui-react";
+} from 'semantic-ui-react';
 
 const ModalExampleCloseIcon = () => (
   <Modal
@@ -52,7 +52,7 @@ const ModalExampleCloseIcon = () => (
                 hour, 7 day and 30 day periods.
                 <p>
                   Change is the difference between current and previous periods
-                  activity.{" "}
+                  activity.{' '}
                 </p>
               </List.Item>
               <List.Item>

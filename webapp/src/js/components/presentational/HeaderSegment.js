@@ -1,15 +1,16 @@
-import React from "react";
-import { Segment, Grid, Header, Responsive, Icon } from "semantic-ui-react";
-import GitHubButton from "react-github-button";
-import Modal from "./Modal";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Segment, Grid, Header, Button, Icon } from 'semantic-ui-react';
+import GitHubButton from 'react-github-button';
+// import MoneyButton from 'react-money-button';
+import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
 const HeaderSegment = props => (
   <Segment>
     <Grid verticalAlign="middle" columns="equal">
       <Grid.Row>
         <Grid.Column>
-          {window.location.pathname != "/" ? (
+          {window.location.pathname != '/' ? (
             <Link to={`/`}>
               <Icon
                 size="big"
@@ -19,17 +20,25 @@ const HeaderSegment = props => (
             </Link>
           ) : null}
         </Grid.Column>
-        <Grid.Column />
+        <Grid.Column>
+          <Link to={`/Compare`}>
+            <Button size="small" color="yellow" content="Compare Activity" />
+          </Link>
+          {/* <MoneyButton
+            to={}
+            amount={1}
+            currency="EUR"
+            label="€1 Donate"
+            hideAmount={false}
+            clientIdentifier=""
+            buttonId=""
+            type="tip"
+          /> */}
+        </Grid.Column>
         <Grid.Column mobile={4} width={6}>
           <Header as="h2" textAlign="center">
             Crypto Subreddit Tracker
           </Header>
-          {/* <Responsive minWidth={768}>
-                        <Header as='h2' textAlign='center'>Crypto Subreddit Tracker</Header>
-                    </Responsive>
-                    <Responsive maxWidth={768}>
-                        <Header as='h4' textAlign='center'>Crypto Subreddit Tracker</Header>
-                    </Responsive> */}
         </Grid.Column>
         <Grid.Column>
           <Modal />
@@ -41,12 +50,6 @@ const HeaderSegment = props => (
             namespace="dylankilkenny"
             repo="cryptosub"
           />
-          {/* <Responsive minWidth={768}>
-                        <GitHubButton type="stargazers" size="large" namespace="dylankilkenny" repo="cryptosub" />
-                    </Responsive>
-                    <Responsive maxWidth={768}>
-                        <GitHubButton type="stargazers" namespace="dylankilkenny" repo="cryptosub" />
-                    </Responsive> */}
         </Grid.Column>
       </Grid.Row>
     </Grid>
