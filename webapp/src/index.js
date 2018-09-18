@@ -1,22 +1,24 @@
-import "semantic-ui-css/semantic.min.css";
-import "react-github-button/assets/style.css";
-import ReactDOM from "react-dom";
-import React from "react";
-import TableContainer from "./js/components/container/TableContainer";
-import SubredditContainer from "./js/components/container/SubredditContainer";
+import 'semantic-ui-css/semantic.min.css';
+import 'react-github-button/assets/style.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import TableContainer from './js/components/container/TableContainer';
+import SubredditContainer from './js/components/container/SubredditContainer';
+import GlobalContainer from './js/components/container/GlobalContainer';
 import {
   Switch,
   Route,
   withRouter,
   BrowserRouter as Router
-} from "react-router-dom";
-import withAnalytics, { initAnalytics } from "react-with-analytics";
+} from 'react-router-dom';
+import withAnalytics, { initAnalytics } from 'react-with-analytics';
 
 initAnalytics(GA_KEY);
 
 const Root = () => (
   <Switch>
     <Route exact path="/" component={TableContainer} />
+    <Route path="/Compare" component={GlobalContainer} />
     <Route path="/:subreddit" component={SubredditContainer} />
   </Switch>
 );
@@ -33,4 +35,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));
