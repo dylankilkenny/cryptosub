@@ -32,7 +32,7 @@ class CommentsPosts(object):
         cpbd_df = pd.DataFrame.from_records(data=self.comments_posts_by_day)
         cpbd_df['n'] = cpbd_df['n_comment'] + cpbd_df['n_post']
         # get the last row of dataframe
-        last_row = cpbd_df.tail(1)
+        last_row = cpbd_df.tail(2)
         # get the date in last row
         last_row_date = last_row.iloc[0]["Date"]
         # to object
