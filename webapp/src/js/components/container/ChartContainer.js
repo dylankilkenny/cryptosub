@@ -14,7 +14,7 @@ class ChartContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tick: 60,
+      tick: 7,
       activityChecked: true
     };
     this.storeData = this.storeData.bind(this);
@@ -60,7 +60,7 @@ class ChartContainer extends React.Component {
 
   storeData = data => {
     const closest_date = moment(data[data.length - 1].Date),
-      furthest_date = moment(data[data.length - 1].Date).subtract(30, 'days');
+      furthest_date = moment(data[data.length - 1].Date).subtract(60, 'days');
     const sma_activity = this.activityMovingAverage(data);
     this.setState(
       {
