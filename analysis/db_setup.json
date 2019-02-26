@@ -11,6 +11,10 @@
         "Subreddit": "btc"
     }, {
         "done": 0,
+        "Symbol": "BSV",
+        "Subreddit": "bitcoincashSV"
+    }, {
+        "done": 0,
         "Symbol": "0",
         "Subreddit": "CryptoCurrency"
     }, {
@@ -3141,6 +3145,10 @@
         "Name": "Bitcoin Cash",
         "Symbol": "BCH",
         "Currency": "bitcoin-cash"
+    }, {
+        "Name": "Bitcoin SV",
+        "Symbol": "BSV",
+        "Currency": "bitcoin-sv"
     }, {
         "Name": "EOS",
         "Symbol": "EOS",
