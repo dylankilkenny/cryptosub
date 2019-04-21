@@ -8,7 +8,7 @@ import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 import BCHDonateQr from '../../../assets/BitcoinCash_QR_code.png';
 import ETHDonateQr from '../../../assets/Ethereum_QR_code.png';
-import NANODonateQr from '../../../assets/NANO_QR_code.png';
+import NANODonateQr from '../../../assets/Nano_QR_code.png';
 
 const DonateModal = ({ show, onHide }) => (
   <Modal
@@ -26,9 +26,6 @@ const DonateModal = ({ show, onHide }) => (
       <Container>
         <Row>
           <Col sm={12} md={4}>
-            {/* <Card body>
-              <Image src={BCHDonateQr} rounded fluid />
-            </Card> */}
             <Card>
               <Card.Img variant="top" src={BCHDonateQr} />
               <Card.Body>
