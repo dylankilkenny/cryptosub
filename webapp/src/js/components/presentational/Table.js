@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import TableRow from './TableRow';
 
 const TableCoin = props => (
-  <Table responsive>
+  <Table size="sm" responsive>
     <thead>
       <tr>
         <th onClick={props.handleSort('rank', '#')}>#</th>

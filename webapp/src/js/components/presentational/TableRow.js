@@ -19,7 +19,7 @@ const TableRow = props => (
       </Link>
     </td>
     <td>
-      <h5>{props.most_popular}</h5>
+      <h6>{props.most_popular}</h6>
     </td>
     <td>
       <Link
@@ -36,13 +36,13 @@ const TableRow = props => (
       </Link>
     </td>
     <td>
-      <h4>
+      <h5>
         <Badge
           variant={parseInt(props.tf_hr_change) < 0 ? 'danger' : 'success'}
         >
           {parseInt(props.tf_hr_change)}%
         </Badge>
-      </h4>
+      </h5>
     </td>
     <td>
       <Link
@@ -59,13 +59,13 @@ const TableRow = props => (
       </Link>
     </td>
     <td>
-      <h4>
+      <h5>
         <Badge
           variant={parseInt(props.seven_day_change) < 0 ? 'danger' : 'success'}
         >
           {parseInt(props.seven_day_change)}%
         </Badge>
-      </h4>
+      </h5>
     </td>
     <td>
       <Link
@@ -82,13 +82,13 @@ const TableRow = props => (
       </Link>
     </td>
     <td>
-      <h4>
+      <h5>
         <Badge
           variant={parseInt(props.thirty_day_change) < 0 ? 'danger' : 'success'}
         >
           {parseInt(props.thirty_day_change)}%
         </Badge>
-      </h4>
+      </h5>
     </td>
   </tr>
 );
