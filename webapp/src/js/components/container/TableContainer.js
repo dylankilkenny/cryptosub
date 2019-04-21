@@ -1,9 +1,10 @@
 import React from 'react';
 import Table from '../presentational/Table';
 import MainContentGrid from '../presentational/MainContentGrid';
-import _ from 'lodash';
-import { Container, Grid, Segment, Icon, Button } from 'semantic-ui-react';
-import Pagination from '../presentational/Pagination';
+import orderBy from 'lodash/orderBy';
+// import Pagination from '../presentational/Pagination';
+// import Pagination from 'react-js-pagination';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class TableContainer extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class TableContainer extends React.Component {
   handleSort = (clickedColumn, title) => () => {
     const { SortedColumn, subs, SortDirection } = this.state;
     if (SortedColumn !== title) {
-      const SortedSubs = _.orderBy(subs, [clickedColumn], ['desc']);
+      const SortedSubs = orderBy(subs, [clickedColumn], ['desc']);
       this.setState({
         SortedColumn: title,
         subs: SortedSubs,
@@ -97,7 +98,7 @@ class TableContainer extends React.Component {
         thirty_day_change: d.thirty_day_change
       };
     });
-    subs = _.orderBy(subs, ['thirty_day_total'], ['desc']);
+    subs = orderBy(subs, ['thirty_day_total'], ['desc']);
     this.setState({
       subs: subs,
       page_number: response.page_number,
@@ -108,7 +109,7 @@ class TableContainer extends React.Component {
 
   render() {
     return (
-      <MainContentGrid width={12}>
+      <MainContentGrid>
         <div>
           <Table
             subreddits={this.state.subs}
@@ -116,14 +117,18 @@ class TableContainer extends React.Component {
             direction={this.state.SortDirection}
             handleSort={this.handleSort}
           />
-          <Container textAlign="right">
+          {/* <Container textAlign="right">
+            {console.log(this.state.total_size)}
+            {console.log(this.state.page_size)}
+
             <Pagination
-              total_pages={Math.round(
-                this.state.total_size / this.state.page_size
-              )}
-              handlePageClick={this.handlePageClick}
+              activePage={this.state.page_number}
+              itemsCountPerPage={this.state.page_size}
+              totalItemsCount={this.state.total_size}
+              pageRangeDisplayed={3}
+              onChange={this.handlePageClick}
             />
-          </Container>
+          </Container> */}
         </div>
       </MainContentGrid>
     );

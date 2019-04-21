@@ -1,19 +1,13 @@
 import React from 'react';
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from 'recharts';
 import moment from 'moment';
-
 import GlobalChart from '../presentational/GlobalChart';
 import MainContentGrid from '../presentational/MainContentGrid';
-import GlobalChartHeader from '../presentational/GlobalChartHeader';
+import CompareChartHeader from '../presentational/CompareChartHeader';
+import CompareChartSelect from '../presentational/CompareChartSelect';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import filter from 'lodash/filter';
 
 class GlobalContainer extends React.Component {
   constructor(props) {
@@ -21,19 +15,15 @@ class GlobalContainer extends React.Component {
     this.state = {
       selected: ['btc', 'Bitcoin', 'CryptoCurrency'],
       colors: ['#ffa700', '#0057e7', '#008744', '	#FF0000', '#000000'],
-      tick: 7,
-      datakey: '_sma',
-      sma_checked: true,
-      selectionChanged: false
+      datakey: '_sma'
     };
     this.storeData = this.storeData.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleFocusChange = this.handleFocusChange.bind(this);
     this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this);
     this.handleSubredditSelection = this.handleSubredditSelection.bind(this);
-    this.fetchDatahandleBlur = this.handleBlur.bind(this);
     this.fetchData = this.fetchData.bind(this);
-    this.handleTickSelection = this.handleTickSelection.bind(this);
+    this.handleSubredditRemoval = this.handleSubredditRemoval.bind(this);
   }
 
   componentDidMount() {
@@ -51,7 +41,7 @@ class GlobalContainer extends React.Component {
       method: 'POST',
       body: JSON.stringify({
         subreddits: this.state.selected,
-        tick: this.state.tick
+        tick: 7
       }),
       headers: { 'Content-Type': 'application/json' }
     })
@@ -65,7 +55,7 @@ class GlobalContainer extends React.Component {
     const activity = data.activity;
     const endDate = moment(activity[activity.length - 1].date);
     const startDate = moment(activity[activity.length - 1].date).subtract(
-      60,
+      120,
       'days'
     );
     this.setState(
@@ -73,7 +63,6 @@ class GlobalContainer extends React.Component {
         startDate: startDate,
         endDate: endDate,
         data: activity,
-        selectionChanged: false,
         subredditList: data.subredditList,
         dates_limit: {
           earliest: moment(activity[0].date),
@@ -93,7 +82,7 @@ class GlobalContainer extends React.Component {
   };
 
   handleDateChange = (startDate, endDate) => {
-    let filtered = _.filter(this.state.data, function(o) {
+    let filtered = filter(this.state.data, function(o) {
       return moment(o.date).isBetween(startDate, endDate);
     });
     this.setState({
@@ -105,64 +94,72 @@ class GlobalContainer extends React.Component {
 
   handleCheckBoxChange = data => {
     this.setState({
-      sma_checked: data.checked,
       datakey: data.checked ? '_sma' : ''
     });
   };
 
-  handleSubredditSelection = (e, data) => {
-    const selectionChanged = this.state.selected == data.value ? false : true;
-    this.setState(
-      {
-        selected: data.value,
-        selectionChanged: selectionChanged
-      },
-      () => this.fetchData()
-    );
-  };
-
-  handleTickSelection = (e, data) => {
-    this.setState(
-      {
-        tick: data.value
-      },
-      () => this.fetchData()
-    );
-  };
-
-  handleBlur = (e, data) => {
-    if (this.state.selectionChanged) {
-      this.fetchData();
+  handleSubredditSelection = event => {
+    const value = event.target.value;
+    if (this.state.selected.indexOf(value) < 1) {
+      const updatedSelections = [...this.state.selected, value];
+      this.setState(
+        {
+          selected: updatedSelections
+        },
+        () => this.fetchData()
+      );
     }
   };
 
+  handleSubredditRemoval = subreddit => {
+    let subs = this.state.selected;
+    const position = subs.indexOf(subreddit);
+    subs.splice(position, 1);
+
+    this.setState(
+      {
+        selected: subs
+      },
+      () => this.fetchData()
+    );
+  };
+
   render() {
+    if (!this.state.subredditList) {
+      return <div />;
+    }
     return (
       <div>
         <MainContentGrid width={14}>
-          <div>
-            <GlobalChartHeader
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              handleDateChange={this.handleDateChange}
-              handleCheckBoxChange={this.handleCheckBoxChange}
-              focusedInput={this.state.focusedInput}
-              handleFocusChange={this.handleFocusChange}
-              dates_limit={this.state.dates_limit}
-              sma_checked={this.state.sma_checked}
-              subredditList={this.state.subredditList}
-              selected={this.state.selected}
-              handleSubredditSelection={this.handleSubredditSelection}
-              handleBlur={this.handleBlur}
-              handleTickSelection={this.handleTickSelection}
-            />
-            <GlobalChart
-              data={this.state.filteredData}
-              selected={this.state.selected}
-              colors={this.state.colors}
-              datakey={this.state.datakey}
-            />
-          </div>
+          <Container>
+            <Row className="justify-content-md-center">
+              <Col sm="12" md="3">
+                <CompareChartSelect
+                  selected={this.state.selected}
+                  subredditList={this.state.subredditList}
+                  handleChange={this.handleSubredditSelection}
+                  handleSubredditRemoval={this.handleSubredditRemoval}
+                />
+              </Col>
+              <Col sm="12" md="9">
+                <CompareChartHeader
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  handleDateChange={this.handleDateChange}
+                  handleCheckBoxChange={this.handleCheckBoxChange}
+                  focusedInput={this.state.focusedInput}
+                  handleFocusChange={this.handleFocusChange}
+                  dates_limit={this.state.dates_limit}
+                />
+                <GlobalChart
+                  data={this.state.filteredData}
+                  selected={this.state.selected}
+                  colors={this.state.colors}
+                  datakey={this.state.datakey}
+                />
+              </Col>
+            </Row>
+          </Container>
         </MainContentGrid>
       </div>
     );

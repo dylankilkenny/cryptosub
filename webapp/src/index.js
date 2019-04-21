@@ -1,4 +1,4 @@
-import 'semantic-ui-css/semantic.min.css';
+import './css/index.css';
 import 'react-github-button/assets/style.css';
 import ReactDOM from 'react-dom';
 import React from 'react';

@@ -1,61 +1,74 @@
 import React from 'react';
-import { Header, Button, Icon, Menu } from 'semantic-ui-react';
-import GitHubButton from 'react-github-button';
-import MoneyButton from '@moneybutton/react-money-button';
 import Modal from './Modal';
 import { Link } from 'react-router-dom';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
+import { FaHeart } from 'react-icons/fa/';
+import { FaRedditSquare } from 'react-icons/fa';
+import { IconContext } from 'react-icons';
+import DonateModal from '../presentational/Donate';
 
 export default class HeaderSegment extends React.Component {
   state = { activeItem: 'home' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  modalClose = () => this.setState({ modalShow: false });
 
   render() {
     const { activeItem } = this.state;
 
     return (
       <div>
-        <Menu secondary>
-          <Menu.Item>
-            <Header as="h2" textAlign="center">
-              <Icon name="reddit square" size="mini" />
+        <Navbar collapseOnSelect expand="lg">
+          <Navbar.Brand>
+            <IconContext.Provider value={{ color: 'black', size: '1.2em' }}>
+              <FaRedditSquare />
+            </IconContext.Provider>
+            <Link className="nav-brand" to="/">
               Crypto Subreddit Tracker
-            </Header>
-          </Menu.Item>
-          <Menu.Item as={Link} to="/">
-            <Button size="small" color="yellow" content="Home" />
-          </Menu.Item>
-          <Menu.Item as={Link} to="/Compare">
-            <Button size="small" color="yellow" content="Compare Activity" />
-          </Menu.Item>
-          <Menu.Item>
-            <Modal />
-          </Menu.Item>
-
-          <Menu.Menu position="right">
-            <Menu.Item>
+            </Link>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse
+            id="responsive-navbar-nav"
+            className="justify-content-end"
+          >
+            <Nav className="mr-auto">
+              <Navbar.Text>
+                <Link className="nav-link" to="/Compare">
+                  Compare Activity
+                </Link>
+              </Navbar.Text>
+              <Navbar.Text>
+                <Modal />
+              </Navbar.Text>
+            </Nav>
+            <Navbar.Text>
+              <Button
+                variant="info"
+                onClick={() => this.setState({ modalShow: true })}
+              >
+                Support &nbsp;
+                <IconContext.Provider value={{ color: 'red' }}>
+                  <FaHeart />
+                </IconContext.Provider>
+              </Button>
+              <DonateModal
+                show={this.state.modalShow}
+                onHide={this.modalClose}
+              />
+            </Navbar.Text>
+            {/* <Navbar.Text>
               <GitHubButton
                 type="stargazers"
                 size="large"
                 namespace="dylankilkenny"
                 repo="cryptosub"
               />
-            </Menu.Item>
-            <Menu.Item position="right">
-              <MoneyButton
-                to="54"
-                amount="0.002"
-                currency="BCH"
-                label="€1 Donate"
-                hideAmount={false}
-                clientIdentifier="5af02e253b87ef334b081d74e4182b1b"
-                buttonId="1537026561224"
-                type="tip"
-                size="small"
-              />
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
+            </Navbar.Text> */}
+          </Navbar.Collapse>
+        </Navbar>
       </div>
     );
   }

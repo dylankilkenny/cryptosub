@@ -1,12 +1,31 @@
-import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
-import React from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import { DateRangePicker } from 'react-dates';
 
-import { Segment, Grid, Checkbox, Header } from "semantic-ui-react";
-import { DateRangePicker } from "react-dates";
+function CheckBox({ handle }) {
+  const useCheckbox = (val = true) => {
+    const [value, setValue] = useState(val);
+    let func = event => {
+      setValue(event.target.checked);
+      handle(event.target);
+    };
+    return [value, func];
+  };
+  const [checked, setChecked] = useCheckbox();
+  return (
+    <div>
+      <input type="checkbox" checked={checked} onChange={setChecked} /> Simple
+      Moving Average
+    </div>
+  );
+}
 
 const ChartHeader = ({
   startDate,
@@ -18,10 +37,9 @@ const ChartHeader = ({
   handleCheckBoxChange,
   activityChecked
 }) => (
-  <Grid verticalAlign="middle" columns="equal">
-    <Grid.Row>
-      <Grid.Column />
-      <Grid.Column textAlign="right">
+  <Container>
+    <Row>
+      <Col sm="12" md="8">
         <DateRangePicker
           showClearDates={true}
           small={true}
@@ -41,19 +59,12 @@ const ChartHeader = ({
             handleFocusChange(focusedInput);
           }}
         />
-      </Grid.Column>
-      <Grid.Column width={3} textAlign="center">
-        <Checkbox
-          checked={activityChecked}
-          onClick={(data, event) => {
-            handleCheckBoxChange(event);
-          }}
-          label="Activity SMA"
-          toggle
-        />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
+      </Col>
+      <Col sm="12" md="4">
+        <CheckBox handle={handleCheckBoxChange} />
+      </Col>
+    </Row>
+  </Container>
 );
 
 ChartHeader.propTypes = {

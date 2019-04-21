@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import sma from 'sma';
 
 import moment from 'moment';
-import _ from 'lodash';
-import { Segment, Grid, Header } from 'semantic-ui-react';
+import filter from 'lodash/filter';
 
 import ChartHeader from '../presentational/ChartHeader';
 import Chart from '../presentational/Chart';
@@ -83,14 +82,13 @@ class ChartContainer extends React.Component {
     this.setState({
       activityChecked: data.checked
     });
-    console.log(data);
   };
 
   handleDateChange = (startDate, endDate) => {
-    let filtered = _.filter(this.state.CommentsPostsByDay, function(o) {
+    let filtered = filter(this.state.CommentsPostsByDay, function(o) {
       return moment(o.Date).isBetween(startDate, endDate);
     });
-    let filteredActivitySMA = _.filter(this.state.sma_activity, function(o) {
+    let filteredActivitySMA = filter(this.state.sma_activity, function(o) {
       return moment(o.Date).isBetween(startDate, endDate);
     });
 
@@ -109,6 +107,9 @@ class ChartContainer extends React.Component {
   };
 
   render() {
+    if (!this.state.CommentsPostsByDay) {
+      return <div />;
+    }
     return (
       <div>
         <ChartHeader
@@ -138,7 +139,6 @@ class ChartContainer extends React.Component {
 }
 
 ChartContainer.propTypes = {
-  CommentsPostsByDay: PropTypes.array.isRequired,
   payload: PropTypes.string.isRequired
 };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   Segment,
@@ -23,7 +22,6 @@ const VolumeChart = ({ data, activityChecked }) => (
         <YAxis yAxisId="right" orientation="right" />
         <Tooltip />
         <Legend />
-        {console.log(data)}
         <Line
           name="# Posts"
           dot={false}
@@ -66,9 +64,5 @@ const VolumeChart = ({ data, activityChecked }) => (
     )}
   </ResponsiveContainer>
 );
-
-VolumeChart.propTypes = {
-  filteredCommPosts: PropTypes.array.isRequired
-};
 
 export default VolumeChart;

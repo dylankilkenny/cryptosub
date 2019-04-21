@@ -1,78 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Label, Menu, Table } from 'semantic-ui-react';
+import Table from 'react-bootstrap/Table';
 import TableRow from './TableRow';
 
 const TableCoin = props => (
-  <Table unstackable compact sortable basic="very" color="blue">
-    <Table.Header>
-      <Table.Row>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === '#' ? props.direction : null}
-          onClick={props.handleSort('rank', '#')}
-        >
-          #
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Subreddit' ? props.direction : null}
-          onClick={props.handleSort('subreddit', 'Subreddit')}
-        >
-          Subreddit
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Most Popular Coin' ? props.direction : null}
-          onClick={props.handleSort('most_popular', 'Most Popular Coin')}
-        >
+  <Table responsive>
+    <thead>
+      <tr>
+        <th onClick={props.handleSort('rank', '#')}>#</th>
+        <th onClick={props.handleSort('subreddit', 'Subreddit')}>Subreddit</th>
+        <th onClick={props.handleSort('most_popular', 'Most Popular Coin')}>
           Most Popular Coin
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Activity (24hr)' ? props.direction : null}
-          onClick={props.handleSort('tf_hr_total', 'Activity (24hr)')}
-        >
+        </th>
+        <th onClick={props.handleSort('tf_hr_total', 'Activity (24hr)')}>
           Activity (24hr)
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Change (24hr)' ? props.direction : null}
-          onClick={props.handleSort('tf_hr_change', 'Change (24hr)')}
-        >
+        </th>
+        <th onClick={props.handleSort('tf_hr_change', 'Change (24hr)')}>
           Change (24hr)
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Activity (7d)' ? props.direction : null}
-          onClick={props.handleSort('seven_day_total', 'Activity (7d)')}
-        >
+        </th>
+        <th onClick={props.handleSort('seven_day_total', 'Activity (7d)')}>
           Activity (7d)
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Change (7d)' ? props.direction : null}
-          onClick={props.handleSort('seven_day_change', 'Change (7d)')}
-        >
+        </th>
+        <th onClick={props.handleSort('seven_day_change', 'Change (7d)')}>
           Change (7d)
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Activity (30d)' ? props.direction : null}
-          onClick={props.handleSort('thirty_day_total', 'Activity (30d)')}
-        >
+        </th>
+        <th onClick={props.handleSort('thirty_day_total', 'Activity (30d)')}>
           Activity (30d)
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          textAlign="center"
-          sorted={props.column === 'Change (30d)' ? props.direction : null}
-          onClick={props.handleSort('thirty_day_change', 'Change (30d)')}
-        >
+        </th>
+        <th onClick={props.handleSort('thirty_day_change', 'Change (30d)')}>
           Change (30d)
-        </Table.HeaderCell>
-      </Table.Row>
-    </Table.Header>
-    <Table.Body>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
       {props.subreddits.map((sub, index) => (
         <TableRow
           key={index}
@@ -87,7 +47,7 @@ const TableCoin = props => (
           thirty_day_change={sub.thirty_day_change}
         />
       ))}
-    </Table.Body>
+    </tbody>
   </Table>
 );
 

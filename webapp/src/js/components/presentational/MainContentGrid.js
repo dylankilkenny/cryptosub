@@ -1,40 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
+import HeaderSegment from './HeaderSegment';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Footer from './Footer';
 
-import HeaderSegment from "./HeaderSegment";
-import Footer from "./Footer";
-import {
-  Button,
-  Header,
-  Icon,
-  Modal,
-  List,
-  Grid,
-  Card
-} from "semantic-ui-react";
-
-const MainContentGrid = ({ children, width }) => (
-  <Grid columns="equal">
-    <Grid.Row>
-      <Grid.Column textAlign="center">
+const MainContentGrid = ({ children }) => (
+  <Container>
+    <Row>
+      <Col>
         <HeaderSegment />
-      </Grid.Column>
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column />
-      <Grid.Column width={width}>{children}</Grid.Column>
-      <Grid.Column />
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column textAlign="center">
+      </Col>
+    </Row>
+    <Row>
+      <Col>{children}</Col>
+    </Row>
+    <Row>
+      <Col>
         <Footer />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
+      </Col>
+    </Row>
+  </Container>
 );
 
 MainContentGrid.propTypes = {
-  width: PropTypes.number.isRequired,
   children: PropTypes.element.isRequired
 };
 

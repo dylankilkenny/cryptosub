@@ -1,14 +1,16 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const path = require("path");
-const webpack = require("webpack");
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
-let API_URL = require("./api.json");
+let API_URL = require('./api.json');
 
-const environment = process.env.NODE_ENV === "prod" ? "prod" : "dev";
+const environment = process.env.NODE_ENV === 'prod' ? 'prod' : 'dev';
 
 module.exports = {
   devServer: {
-    contentBase: "./dist",
+    contentBase: './dist',
     historyApiFallback: true
   },
   module: {
@@ -17,21 +19,20 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader?retainLines=true"
+          loader: 'babel-loader?retainLines=true'
         }
       },
       {
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader"
+            loader: 'html-loader'
           }
         ]
       },
       {
         test: /\.css$/,
-        include: /node_modules/,
-        loaders: ["style-loader", "css-loader"]
+        use: ['style-loader', 'css-loader']
       },
       // {
       //   test: /\.less$/,
@@ -53,19 +54,20 @@ module.exports = {
       // },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: "url-loader?limit=100000"
+        loader: 'url-loader?limit=100000'
       }
     ]
   },
   plugins: [
     new HtmlWebPackPlugin({
       debug: true,
-      template: "./src/index.html",
-      filename: "./index.html"
+      template: './src/index.html',
+      filename: './index.html'
     }),
     new webpack.DefinePlugin({
       API_URL: API_URL[environment],
       GA_KEY: JSON.stringify(process.env.GA_KEY)
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ]
 };

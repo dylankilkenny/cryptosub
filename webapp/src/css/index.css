@@ -1,0 +1,14 @@
+.nav-brand {
+    text-decoration: none;
+    color: black !important;
+    font-size: 20px;
+    font-family: Helvetica;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #373c42 !important;
+    font-size: 16px;
+    font-family: Helvetica;
+    cursor: pointer;
+}

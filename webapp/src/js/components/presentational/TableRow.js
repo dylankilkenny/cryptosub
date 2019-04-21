@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
-import { Label, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import Badge from 'react-bootstrap/Badge';
 
 const TableRow = props => (
-  <Table.Row textAlign="center">
-    <Table.Cell>{props.rank}</Table.Cell>
-    <Table.Cell textAlign="left">
+  <tr>
+    <td>{props.rank}</td>
+    <td>
       <Link
         to={{
           pathname: `/${props.subreddit}`,
@@ -17,11 +17,11 @@ const TableRow = props => (
         r/
         {props.subreddit}
       </Link>
-    </Table.Cell>
-    <Table.Cell textAlign="left">
+    </td>
+    <td>
       <h5>{props.most_popular}</h5>
-    </Table.Cell>
-    <Table.Cell>
+    </td>
+    <td>
       <Link
         to={{
           pathname: `/${props.subreddit}`,
@@ -34,16 +34,17 @@ const TableRow = props => (
           displayType={'text'}
         />
       </Link>
-    </Table.Cell>
-    <Table.Cell>
-      <Label
-        color={parseInt(props.tf_hr_change) < 0 ? 'red' : 'green'}
-        horizontal
-      >
-        {parseInt(props.tf_hr_change)}%
-      </Label>
-    </Table.Cell>
-    <Table.Cell>
+    </td>
+    <td>
+      <h4>
+        <Badge
+          variant={parseInt(props.tf_hr_change) < 0 ? 'danger' : 'success'}
+        >
+          {parseInt(props.tf_hr_change)}%
+        </Badge>
+      </h4>
+    </td>
+    <td>
       <Link
         to={{
           pathname: `/${props.subreddit}`,
@@ -56,16 +57,17 @@ const TableRow = props => (
           displayType={'text'}
         />
       </Link>
-    </Table.Cell>
-    <Table.Cell>
-      <Label
-        color={parseInt(props.seven_day_change) < 0 ? 'red' : 'green'}
-        horizontal
-      >
-        {parseInt(props.seven_day_change)}%
-      </Label>
-    </Table.Cell>
-    <Table.Cell>
+    </td>
+    <td>
+      <h4>
+        <Badge
+          variant={parseInt(props.seven_day_change) < 0 ? 'danger' : 'success'}
+        >
+          {parseInt(props.seven_day_change)}%
+        </Badge>
+      </h4>
+    </td>
+    <td>
       <Link
         to={{
           pathname: `/${props.subreddit}`,
@@ -78,16 +80,17 @@ const TableRow = props => (
           displayType={'text'}
         />
       </Link>
-    </Table.Cell>
-    <Table.Cell>
-      <Label
-        color={parseInt(props.thirty_day_change) < 0 ? 'red' : 'green'}
-        horizontal
-      >
-        {parseInt(props.thirty_day_change)}%
-      </Label>
-    </Table.Cell>
-  </Table.Row>
+    </td>
+    <td>
+      <h4>
+        <Badge
+          variant={parseInt(props.thirty_day_change) < 0 ? 'danger' : 'success'}
+        >
+          {parseInt(props.thirty_day_change)}%
+        </Badge>
+      </h4>
+    </td>
+  </tr>
 );
 
 TableRow.propTypes = {

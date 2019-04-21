@@ -1,12 +1,14 @@
 import React from 'react';
 import ChartContainer from './ChartContainer';
 import PopularCoinsContainer from './PopularCoinsContainer';
-import WordsFreqContainer from './WordsFreqContainer';
 import SubInfoCard from '../presentational/SubInfoCard';
 import MainContentGrid from '../presentational/MainContentGrid';
-import _ from 'lodash';
-import { Grid, Header, Tab } from 'semantic-ui-react';
-import BigramsFreqContainer from './BigramsFreqContainer';
+import orderBy from 'lodash/orderBy';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 class SubredditContainer extends React.Component {
   constructor(props) {
@@ -23,6 +25,7 @@ class SubredditContainer extends React.Component {
     };
     this.handleTabChange = this.handleTabChange.bind(this);
     this.storeData = this.storeData.bind(this);
+    this.testTabReload = this.testTabReload.bind(this);
   }
 
   componentDidMount() {
@@ -44,93 +47,41 @@ class SubredditContainer extends React.Component {
   }
 
   storeData = data => {
-    const CurrencyMentions = _.orderBy(
+    const CurrencyMentions = orderBy(
       data[0].currency_mentions,
       ['n'],
       ['desc']
     );
-    const word_freq = _.orderBy(data[0].word_freq, ['n'], ['desc']);
-    const bigram_freq = _.orderBy(data[0].bigram_freq, ['n'], ['desc']);
+    const word_freq = orderBy(data[0].word_freq, ['n'], ['desc']);
+    const bigram_freq = orderBy(data[0].bigram_freq, ['n'], ['desc']);
 
-    const hashbang = window.location.hash;
-    let activeIndex;
-    if (hashbang) {
-      activeIndex = this.state.panesHashbang.indexOf(hashbang);
-    } else {
-      activeIndex = 0;
-    }
     this.setState({
       Subreddit: data[0],
       CurrencyMentions: CurrencyMentions.slice(0, 10),
       word_freq: word_freq.slice(0, 20),
-      bigram_freq: bigram_freq.slice(0, 15),
-      activeIndex: activeIndex
+      bigram_freq: bigram_freq.slice(0, 15)
     });
   };
 
-  handleTabChange = (e, { activeIndex }) => {
-    const paneTitle = this.state.panesHashbang[activeIndex];
-    window.history.replaceState(null, null, paneTitle);
-    this.setState({ activeIndex });
+  handleTabChange = key => {
+    window.history.replaceState(null, null, '#' + key);
+  };
+
+  testTabReload = () => {
+    this.forceUpdate();
   };
 
   render() {
-    const panes = [
-      {
-        menuItem: 'Comments and Posts',
-        render: () => (
-          <Tab.Pane>
-            <Header textAlign="center" as="h2">
-              Comments and Posts
-            </Header>
-            <ChartContainer
-              CommentsPostsByDay={this.state.CommentsPostsByDay}
-              payload={this.state.payload}
-            />
-          </Tab.Pane>
-        )
-      },
-      {
-        menuItem: 'Most Popular Coins',
-        render: () => (
-          <Tab.Pane>
-            <PopularCoinsContainer
-              payload={this.state.payload}
-              CurrencyMentions={this.state.CurrencyMentions}
-            />
-          </Tab.Pane>
-        )
-      },
-      {
-        menuItem: 'Word Frequency',
-        render: () => (
-          <Tab.Pane>
-            <WordsFreqContainer
-              payload={this.state.payload}
-              word_freq={this.state.word_freq}
-            />
-          </Tab.Pane>
-        )
-      },
-      {
-        menuItem: 'Bigram Frequency',
-        render: () => (
-          <Tab.Pane>
-            <BigramsFreqContainer
-              payload={this.state.payload}
-              bigram_freq={this.state.bigram_freq}
-            />
-          </Tab.Pane>
-        )
-      }
-    ];
+    if (!this.state.Subreddit) {
+      return <div />;
+    }
     return (
       <div>
         <MainContentGrid width={14}>
-          <Grid stackable>
-            <Grid.Row stretched>
-              <Grid.Column width={4}>
-                <Header as="h1">
+          <Container>
+            <Row className="justify-content-md-center">
+              <Col sm="12" md="4">
+                <h3>
                   <a
                     href={`http://reddit.com/r/${
                       this.props.match.params.subreddit
@@ -139,26 +90,41 @@ class SubredditContainer extends React.Component {
                     r/
                     {this.props.match.params.subreddit}
                   </a>
-                </Header>
-              </Grid.Column>
-              <Grid.Column width={12}>
+                </h3>
+              </Col>
+              <Col sm="12" md="8">
                 <SubInfoCard
                   SubName={this.props.match.params.subreddit}
                   payload={this.state.payload}
                   Subreddit={this.state.Subreddit}
                 />
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={16}>
-                <Tab
-                  activeIndex={this.state.activeIndex}
-                  onTabChange={this.handleTabChange}
-                  panes={panes}
-                />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+              </Col>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Col sm="12" md="12">
+                <Tabs
+                  mountOnEnter
+                  unmountOnExit
+                  transition={false}
+                  defaultActiveKey="CommentsAndPosts"
+                  id="uncontrolled-tab-example"
+                  onSelect={this.handleTabChange}
+                >
+                  <Tab eventKey="CommentsAndPosts" title="Comments And Posts">
+                    <br />
+                    <ChartContainer payload={this.state.payload} />
+                  </Tab>
+                  <Tab eventKey="MostPopularCoins" title="Most Popular Coins">
+                    <br />
+                    <PopularCoinsContainer
+                      payload={this.state.payload}
+                      CurrencyMentions={this.state.CurrencyMentions}
+                    />
+                  </Tab>
+                </Tabs>
+              </Col>
+            </Row>
+          </Container>
         </MainContentGrid>
       </div>
     );
