@@ -13,19 +13,19 @@ import Row from 'react-bootstrap/Row';
 class SubredditContainer extends React.Component {
   constructor(props) {
     super(props);
+
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let tab = params.get('tab');
+    let activeTab = tab ? tab : 'CommentsAndPosts';
+
     this.state = {
       payload: JSON.stringify({ subreddit: this.props.match.params.subreddit }),
-      panesHashbang: [
-        '#CommentsandPosts',
-        '#MostPopularCoins',
-        '#WordFrequency',
-        '#BigramFrequency'
-      ],
-      activeIndex: 0
+      activeTab: activeTab
     };
+
     this.handleTabChange = this.handleTabChange.bind(this);
     this.storeData = this.storeData.bind(this);
-    this.testTabReload = this.testTabReload.bind(this);
   }
 
   componentDidMount() {
@@ -64,11 +64,12 @@ class SubredditContainer extends React.Component {
   };
 
   handleTabChange = key => {
-    window.history.replaceState(null, null, '#' + key);
-  };
-
-  testTabReload = () => {
-    this.forceUpdate();
+    window.history.replaceState(
+      null,
+      null,
+      this.props.match.params.subreddit + '?tab=' + key
+    );
+    this.setState({ activeTab: key });
   };
 
   render() {
@@ -107,6 +108,7 @@ class SubredditContainer extends React.Component {
                   unmountOnExit
                   transition={false}
                   defaultActiveKey="CommentsAndPosts"
+                  activeKey={this.state.activeTab}
                   id="uncontrolled-tab-example"
                   onSelect={this.handleTabChange}
                 >
