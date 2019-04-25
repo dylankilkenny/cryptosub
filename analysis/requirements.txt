@@ -5,7 +5,7 @@ certifi==2018.4.16
 cffi==1.11.5
 chardet==3.0.4
 cryptography==2.3
-Faker==0.8.17
+Faker==0.9.3
 idna==2.7
 more-itertools==4.2.0
 nltk==3.3
