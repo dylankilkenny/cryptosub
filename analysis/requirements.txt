@@ -14,7 +14,7 @@ pandas==0.23.3
 pluggy==0.6.0
 praw==5.4.0
 prawcore==0.14.0
-py==1.5.4
+py==1.8.0
 pycparser==2.18
 pymongo==3.7.1
 pyOpenSSL==18.0.0
