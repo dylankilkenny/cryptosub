@@ -18,7 +18,7 @@ py==1.5.4
 pycparser==2.18
 pymongo==3.7.1
 pyOpenSSL==18.0.0
-pytest==3.6.3
+pytest==3.10.1
 python-dateutil==2.7.3
 pytz==2018.5
 requests==2.19.1
