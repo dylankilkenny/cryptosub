@@ -2,7 +2,7 @@ import React from 'react';
 import Table from '../presentational/Table';
 import MainContentGrid from '../presentational/MainContentGrid';
 import orderBy from 'lodash/orderBy';
-// import Pagination from '../presentational/Pagination';
+import Pagination from '../presentational/Pagination';
 // import Pagination from 'react-js-pagination';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -52,10 +52,10 @@ class TableContainer extends React.Component {
       .catch(error => console.log(error));
   };
 
-  handlePageClick = event => {
+  handlePageClick = pageNumber => {
     this.setState(
       {
-        page_number: event.activePage
+        page_number: pageNumber
       },
       function() {
         this.fetchData();
@@ -82,12 +82,13 @@ class TableContainer extends React.Component {
 
   storeSubreddits = response => {
     let data = response.data;
-    var i = 0;
+    var i = (this.state.page_number - 1) * this.state.page_size;
+
     var subs = data.map(d => {
       i++;
       return {
         key: i,
-        rank: d.rank,
+        rank: i,
         subreddit: d.id,
         most_popular: d.most_popular,
         tf_hr_total: d.one_day_total,
@@ -108,6 +109,9 @@ class TableContainer extends React.Component {
   };
 
   render() {
+    if (this.state.subs.length == 0) {
+      return <div />;
+    }
     return (
       <MainContentGrid>
         <div>
@@ -117,18 +121,13 @@ class TableContainer extends React.Component {
             direction={this.state.SortDirection}
             handleSort={this.handleSort}
           />
-          {/* <Container textAlign="right">
-            {console.log(this.state.total_size)}
-            {console.log(this.state.page_size)}
 
-            <Pagination
-              activePage={this.state.page_number}
-              itemsCountPerPage={this.state.page_size}
-              totalItemsCount={this.state.total_size}
-              pageRangeDisplayed={3}
-              onChange={this.handlePageClick}
-            />
-          </Container> */}
+          <Pagination
+            activePage={this.state.page_number}
+            itemsCountPerPage={this.state.page_size}
+            totalItemsCount={this.state.total_size}
+            handlePageClick={this.handlePageClick}
+          />
         </div>
       </MainContentGrid>
     );
