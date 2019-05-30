@@ -4,7 +4,7 @@ attrs==18.1.0
 certifi==2018.4.16
 cffi==1.11.5
 chardet==3.0.4
-cryptography==2.3
+cryptography==2.7
 Faker==0.8.17
 idna==2.7
 more-itertools==4.2.0
